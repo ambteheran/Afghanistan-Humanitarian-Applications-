@@ -1,31 +1,28 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>سامانه بررسی ویزا – دولت ایتالیا</title>
+  <title>Visa Check System – Italian Government</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    /* ------------- RESET & BASE ------------- */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Tahoma','Segoe UI', sans-serif;
-      direction: rtl;
-      display: flex;
+      font-family: 'Segoe UI', sans-serif;
       background: #f4f5f6;
       height: 100vh;
-      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
     a { color: inherit; text-decoration: none; }
 
-    /* ------------- OVERLAY LOADING ------------- */
     #overlay {
       position: fixed; top:0; left:0; width:100%; height:100%;
-      background: rgba(255,255,255,0.9); display: flex;
+      background: rgba(255,255,255,0.95); display: flex;
       align-items: center; justify-content: center;
       z-index: 100;
     }
-    #overlay img { width: 120px; }
+    #overlay img { width: 100px; }
 
-    /* ------------- SIDEBAR ------------- */
     .sidebar {
       width: 200px; background: #003366; color: #fff;
       display: flex; flex-direction: column;
@@ -39,7 +36,11 @@
     }
     .sidebar button:hover { background: #0071c5; }
 
-    /* ------------- MAIN CONTENT ------------- */
+    .container {
+      display: flex; flex: 1;
+      flex-direction: row;
+    }
+
     .main {
       flex: 1; display: flex; flex-direction: column;
     }
@@ -48,7 +49,7 @@
       display: flex; align-items: center;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
-    header img, footer img { height: 50px; margin-left: 15px; }
+    header img, footer img { height: 45px; margin-right: 15px; }
     header h1 { font-size: 1.4rem; color: #003366; }
 
     .content {
@@ -86,72 +87,83 @@
       margin-top: 15px;
       background: #007b00;
     }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+      .sidebar {
+        flex-direction: row;
+        width: 100%;
+        padding: 10px;
+        justify-content: space-around;
+      }
+      .sidebar button {
+        width: 30%;
+        font-size: 0.8rem;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- LOADING OVERLAY -->
   <div id="overlay">
-    <img src="loading.gif" alt="در حال بارگذاری...">
+    <img src="loading.gif" alt="Loading...">
   </div>
 
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-    <button onclick="document.getElementById('passportFile').click()">آپلود پاسپورت</button>
-    <button onclick="document.getElementById('photoFile').click()">آپلود تصویر</button>
-    <button onclick="document.getElementById('submitBtn').click()">بررسی اطلاعات</button>
-  </div>
+  <header>
+    <img src="logo.png" alt="Logo">
+    <h1>Visa Check System</h1>
+  </header>
 
-  <!-- MAIN -->
-  <div class="main">
-    <header>
-      <img src="logo.png" alt="لوگو">
-      <h1>سامانه بررسی ویزا</h1>
-    </header>
-
-    <div class="content">
-      <div class="form-box" id="formBox">
-        <input type="text" id="name" placeholder="نام" required>
-        <input type="text" id="lastname" placeholder="تخلص" required>
-        <input type="text" id="passportNumber" placeholder="شماره پاسپورت" required>
-        <input type="text" id="clientNumber" placeholder="شماره کلاینت" required>
-        <input type="file" id="passportFile" style="display:none">
-        <input type="file" id="photoFile" style="display:none">
-        <button id="submitBtn">ثبت و بررسی</button>
-        <div id="message"></div>
-        <button id="downloadBtn">دانلود فایل PDF</button>
-      </div>
+  <div class="container">
+    <!-- Sidebar hidden by default -->
+    <div class="sidebar" id="sidebar" style="display:none;">
+      <button onclick="document.getElementById('passportFile').click()">Upload Passport</button>
+      <button onclick="document.getElementById('photoFile').click()">Upload Photo</button>
+      <button onclick="document.getElementById('submitBtn').click()">Check Info</button>
     </div>
 
-    <footer>
-      <img src="logo.png" alt="لوگو">
-    </footer>
+    <div class="main">
+      <div class="content">
+        <div class="form-box" id="formBox">
+          <input type="text" id="name" placeholder="First Name" required>
+          <input type="text" id="lastname" placeholder="Last Name" required>
+          <input type="text" id="passportNumber" placeholder="Passport Number" required>
+          <input type="text" id="clientNumber" placeholder="Client Number" required>
+          <input type="file" id="passportFile" style="display:none">
+          <input type="file" id="photoFile" style="display:none">
+          <button id="submitBtn">Submit and Check</button>
+          <div id="message"></div>
+          <button id="downloadBtn">Download PDF File</button>
+        </div>
+      </div>
+    </div>
   </div>
 
+  <footer>
+    <img src="logo.png" alt="Logo">
+  </footer>
 
   <script>
-    // --- 1. Overlay on load ---
     window.addEventListener('load', () => {
       setTimeout(() => {
         document.getElementById('overlay').style.display = 'none';
       }, 2500);
     });
 
-    // --- 2. بارگذاری data.json ---
     let users = [];
     fetch('data.json')
       .then(r => r.json())
       .then(j => users = j)
-      .catch(e => console.error('خطا در بارگذاری JSON:', e));
+      .catch(e => console.error('Error loading JSON:', e));
 
-    // --- 3. درگاه بررسی ---
     document.getElementById('submitBtn').addEventListener('click', () => {
       const msg = document.getElementById('message');
       const dl = document.getElementById('downloadBtn');
       msg.textContent = '';
       dl.style.display = 'none';
 
-      // آماده‌سازی داده کاربر
       const input = {
         name: document.getElementById('name').value.trim(),
         lastname: document.getElementById('lastname').value.trim(),
@@ -159,13 +171,11 @@
         clientNumber: document.getElementById('clientNumber').value.trim()
       };
 
-      // نمایش loading
       document.getElementById('overlay').style.display = 'flex';
 
       setTimeout(() => {
         document.getElementById('overlay').style.display = 'none';
 
-        // مقایسه
         const found = users.find(u =>
           u.name === input.name &&
           u.lastname === input.lastname &&
@@ -174,14 +184,14 @@
         );
 
         if (found) {
-          // موفقیت → دکمه دانلود و باز کردن PDF
           dl.style.display = 'block';
           dl.onclick = () => window.open(found.pdfLink, '_blank');
           msg.style.color = '#007b00';
-          msg.textContent = 'اطلاعات معتبر است، برای دانلود کلیک کنید.';
+          msg.textContent = 'Information verified. Click to download.';
+          document.getElementById('sidebar').style.display = 'flex';
         } else {
           msg.style.color = '#c00';
-          msg.textContent = 'اطلاعات مطابقت ندارد!';
+          msg.textContent = 'Information does not match!';
         }
 
       }, 3000);
