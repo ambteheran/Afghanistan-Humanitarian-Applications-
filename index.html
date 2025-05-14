@@ -1,18 +1,205 @@
-[
-  {
-    "name": "Ali",
-    "lastname": "Ahmadi",
-    "passport": "A12345678",
-    "clientNumber": "987654321",
-    "birthdate": "1990-01-15",
-    "pdfLink": "https://drive.google.com/file/d/1frpSOrMpOYgVP61UakjiZeAv5F_y8-Qs/view?usp=drive_link"
-  },
-  {
-    "name": "Fatemeh",
-    "lastname": "Karimi",
-    "passport": "B98765432",
-    "clientNumber": "123456789",
-    "birthdate": "1992-06-22",
-    "pdfLink": "https://drive.google.com/file/d/1AeILY5xoS1WWdVTXFde4KFAl4mm5ADLr/view?usp=drive_link"
-  }
-]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Italian Humanitarian service Track your application – Italian Government</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f5f6;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    #overlay {
+      position: fixed; top:0; left:0; width:100%; height:100%;
+      background: rgba(255,255,255,0.95); display: flex;
+      align-items: center; justify-content: center;
+      z-index: 100;
+    }
+    #overlay img { width: 100px; }
+
+    .sidebar {
+      width: 200px; background: #003366; color: #fff;
+      display: flex; flex-direction: column;
+      align-items: center; padding-top: 30px;
+    }
+    .sidebar button {
+      width: 80%; margin: 10px 0; padding: 10px;
+      background: #0055a5; border: none; border-radius: 5px;
+      color: #fff; cursor: pointer; font-size: 0.9rem;
+      transition: background 0.3s;
+    }
+    .sidebar button:hover { background: #0071c5; }
+
+    .container {
+      display: flex; flex: 1;
+      flex-direction: row;
+    }
+
+    .main {
+      flex: 1; display: flex; flex-direction: column;
+    }
+    header, footer {
+      background: #fff; padding: 15px 20px;
+      display: flex; align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    header img, footer img { height: 45px; margin-right: 15px; }
+    header h1 { font-size: 1.4rem; color: #003366; }
+
+    .content {
+      flex: 1; overflow-y: auto;
+      padding: 30px; display: flex; justify-content: center;
+    }
+    .form-box {
+      width: 100%; max-width: 480px;
+      background: #fff; padding: 30px;
+      border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .form-box input[type="text"],
+    .form-box input[type="date"],
+    .form-box input[type="file"] {
+      width: 100%; padding: 10px; margin: 12px 0;
+      border: 1px solid #ccc; border-radius: 4px;
+      font-size: 1rem;
+    }
+    .form-box button {
+      width: 100%; padding: 12px;
+      background: #003366; color: #fff;
+      border: none; border-radius: 5px;
+      font-size: 1rem; cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.3s;
+    }
+    .form-box button:hover { background: #0055a5; }
+
+    #message {
+      text-align: center; margin-top: 20px;
+      font-size: 1.1rem;
+      color: #c00;
+    }
+    #downloadBtn {
+      display: none;
+      margin-top: 15px;
+      background: #007b00;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+      .sidebar {
+        flex-direction: row;
+        width: 100%;
+        padding: 10px;
+        justify-content: space-around;
+      }
+      .sidebar button {
+        width: 30%;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="overlay">
+    <img src="loading.gif" alt="Loading...">
+  </div>
+
+  <header>
+    <img src="logo.png" alt="Logo">
+    <h1>Visa Check System</h1>
+  </header>
+
+  <div class="container">
+    <div class="sidebar" id="sidebar" style="display:none;">
+      <button onclick="document.getElementById('passportFile').click()">Upload Passport</button>
+      <button onclick="document.getElementById('photoFile').click()">Upload Photo</button>
+      <button onclick="document.getElementById('submitBtn').click()">Check Info</button>
+    </div>
+
+    <div class="main">
+      <div class="content">
+        <div class="form-box" id="formBox">
+          <input type="text" id="name" placeholder="First Name" required>
+          <input type="text" id="lastname" placeholder="Last Name" required>
+          <input type="text" id="passportNumber" placeholder="Passport Number" required>
+          <input type="text" id="clientNumber" placeholder="Client Number" required>
+          <input type="date" id="birthdate" placeholder="Birthdate" required>
+          <input type="file" id="passportFile" style="display:none">
+          <input type="file" id="photoFile" style="display:none">
+          <button id="submitBtn">Submit and Check</button>
+          <div id="message"></div>
+          <button id="downloadBtn">Download PDF File</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <img src="logo.png" alt="Logo">
+  </footer>
+
+  <script>
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('overlay').style.display = 'none';
+      }, 2500);
+    });
+
+    let users = [];
+    fetch('data.json')
+      .then(r => r.json())
+      .then(j => users = j)
+      .catch(e => console.error('Error loading JSON:', e));
+
+    document.getElementById('submitBtn').addEventListener('click', () => {
+      const msg = document.getElementById('message');
+      const dl = document.getElementById('downloadBtn');
+      msg.textContent = '';
+      dl.style.display = 'none';
+
+      const input = {
+        name: document.getElementById('name').value.trim(),
+        lastname: document.getElementById('lastname').value.trim(),
+        passport: document.getElementById('passportNumber').value.trim(),
+        clientNumber: document.getElementById('clientNumber').value.trim(),
+        birthdate: document.getElementById('birthdate').value.trim()
+      };
+
+      document.getElementById('overlay').style.display = 'flex';
+
+      setTimeout(() => {
+        document.getElementById('overlay').style.display = 'none';
+
+        const found = users.find(u =>
+          u.name === input.name &&
+          u.lastname === input.lastname &&
+          u.passport === input.passport &&
+          u.clientNumber === input.clientNumber &&
+          u.birthdate === input.birthdate
+        );
+
+        if (found) {
+          dl.style.display = 'block';
+          dl.onclick = () => window.open(found.pdfLink, '_blank');
+          msg.style.color = '#007b00';
+          msg.textContent = 'Information verified. Click to download.';
+          document.getElementById('sidebar').style.display = 'flex';
+        } else {
+          msg.style.color = '#c00';
+          msg.textContent = 'Information does not match!';
+        }
+
+      }, 3000);
+    });
+  </script>
+
+</body>
+</html>
