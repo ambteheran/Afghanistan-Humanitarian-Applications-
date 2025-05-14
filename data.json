@@ -6,7 +6,6 @@
     "clientNumber": "987654321",
     "nationality": "Afghan",
     "gender": "Male",
-    "dob": "1990-01-15",
     "pdfLink": "https://drive.google.com/file/d/1frpSOrMpOYgVP61UakjiZeAv5F_y8-Qs/view?usp=drive_link"
   },
   {
@@ -16,7 +15,6 @@
     "clientNumber": "123456789",
     "nationality": "Iranian",
     "gender": "Female",
-    "dob": "1995-06-30",
     "pdfLink": "https://drive.google.com/file/d/1AeILY5xoS1WWdVTXFde4KFAl4mm5ADLr/view?usp=drive_link"
   }
 ]
