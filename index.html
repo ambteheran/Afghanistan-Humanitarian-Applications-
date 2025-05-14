@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Italian Humanitarian service Track your application – Italian Government</title>
+  <title>Italian Humanitarian service Track your application  – Italian Government</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -62,7 +62,6 @@
       border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
     .form-box input[type="text"],
-    .form-box input[type="date"],
     .form-box input[type="file"] {
       width: 100%; padding: 10px; margin: 12px 0;
       border: 1px solid #ccc; border-radius: 4px;
@@ -114,10 +113,11 @@
 
   <header>
     <img src="logo.png" alt="Logo">
-    <h1>Visa Check System</h1>
+    <h1>Track your application </h1>
   </header>
 
   <div class="container">
+    <!-- Sidebar hidden by default -->
     <div class="sidebar" id="sidebar" style="display:none;">
       <button onclick="document.getElementById('passportFile').click()">Upload Passport</button>
       <button onclick="document.getElementById('photoFile').click()">Upload Photo</button>
@@ -131,7 +131,6 @@
           <input type="text" id="lastname" placeholder="Last Name" required>
           <input type="text" id="passportNumber" placeholder="Passport Number" required>
           <input type="text" id="clientNumber" placeholder="Client Number" required>
-          <input type="date" id="birthdate" placeholder="Birthdate" required>
           <input type="file" id="passportFile" style="display:none">
           <input type="file" id="photoFile" style="display:none">
           <button id="submitBtn">Submit and Check</button>
@@ -169,8 +168,7 @@
         name: document.getElementById('name').value.trim(),
         lastname: document.getElementById('lastname').value.trim(),
         passport: document.getElementById('passportNumber').value.trim(),
-        clientNumber: document.getElementById('clientNumber').value.trim(),
-        birthdate: document.getElementById('birthdate').value.trim()
+        clientNumber: document.getElementById('clientNumber').value.trim()
       };
 
       document.getElementById('overlay').style.display = 'flex';
@@ -182,8 +180,7 @@
           u.name === input.name &&
           u.lastname === input.lastname &&
           u.passport === input.passport &&
-          u.clientNumber === input.clientNumber &&
-          u.birthdate === input.birthdate
+          u.clientNumber === input.clientNumber
         );
 
         if (found) {
