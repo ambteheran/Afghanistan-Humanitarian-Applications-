@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Italian Humanitarian service Track your application – Italian Government</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <title>Italian Humanitarian service Track your application  – Italian Government</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -88,22 +88,6 @@
       background: #007b00;
     }
 
-    #imageOverlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 200;
-    }
-    #imageOverlay img {
-      max-width: 90%;
-      max-height: 90%;
-      border-radius: 8px;
-      box-shadow: 0 0 20px #000;
-    }
-
     @media (max-width: 768px) {
       .container {
         flex-direction: column;
@@ -124,31 +108,31 @@
 <body>
 
   <div id="overlay">
-    <img src="loading.gif" alt="Loading..." />
+    <img src="loading.gif" alt="Loading...">
   </div>
 
   <header>
-    <img src="logo.png" alt="Logo" />
+    <img src="logo.png" alt="Logo">
     <h1>Track your application </h1>
   </header>
 
   <div class="container">
+    <!-- Sidebar hidden by default -->
     <div class="sidebar" id="sidebar" style="display:none;">
       <button onclick="document.getElementById('passportFile').click()">Upload Passport</button>
       <button onclick="document.getElementById('photoFile').click()">Upload Photo</button>
       <button onclick="document.getElementById('submitBtn').click()">Check Info</button>
-      <button id="showImageBtn">Show Image</button>
     </div>
 
     <div class="main">
       <div class="content">
         <div class="form-box" id="formBox">
-          <input type="text" id="name" placeholder="First Name" required />
-          <input type="text" id="lastname" placeholder="Last Name" required />
-          <input type="text" id="passportNumber" placeholder="Passport Number" required />
-          <input type="text" id="clientNumber" placeholder="Client Number" required />
-          <input type="file" id="passportFile" style="display:none" />
-          <input type="file" id="photoFile" style="display:none" />
+          <input type="text" id="name" placeholder="First Name" required>
+          <input type="text" id="lastname" placeholder="Last Name" required>
+          <input type="text" id="passportNumber" placeholder="Passport Number" required>
+          <input type="text" id="clientNumber" placeholder="Client Number" required>
+          <input type="file" id="passportFile" style="display:none">
+          <input type="file" id="photoFile" style="display:none">
           <button id="submitBtn">Submit and Check</button>
           <div id="message"></div>
           <button id="downloadBtn">Download PDF File</button>
@@ -158,17 +142,17 @@
   </div>
 
   <footer>
-    <img src="logo.png" alt="Logo" />
+    <img src="logo.png" alt="Logo">
   </footer>
 
-  <div id="imageOverlay">
-    <img id="localImage" src="" alt="Show result" />
-  </div>
-
   <script>
-    let users = [];
-    let currentUser = null;
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('overlay').style.display = 'none';
+      }, 2500);
+    });
 
+    let users = [];
     fetch('data.json')
       .then(r => r.json())
       .then(j => users = j)
@@ -179,7 +163,6 @@
       const dl = document.getElementById('downloadBtn');
       msg.textContent = '';
       dl.style.display = 'none';
-      currentUser = null;
 
       const input = {
         name: document.getElementById('name').value.trim(),
@@ -201,7 +184,6 @@
         );
 
         if (found) {
-          currentUser = found;
           dl.style.display = 'block';
           dl.onclick = () => window.open(found.pdfLink, '_blank');
           msg.style.color = '#007b00';
@@ -211,30 +193,10 @@
           msg.style.color = '#c00';
           msg.textContent = 'Information does not match!';
         }
+
       }, 3000);
     });
-
-    document.getElementById('showImageBtn').addEventListener('click', () => {
-      const imageOverlay = document.getElementById('imageOverlay');
-      const localImage = document.getElementById('localImage');
-
-      if (currentUser && currentUser.imageLink) {
-        localImage.src = currentUser.imageLink;
-        imageOverlay.style.display = 'flex';
-
-        setTimeout(() => {
-          imageOverlay.style.display = 'none';
-        }, 120000);
-      } else {
-        alert("No image found or user not verified.");
-      }
-    });
-
-    document.getElementById('imageOverlay').addEventListener('click', (e) => {
-      if (e.target === document.getElementById('imageOverlay')) {
-        document.getElementById('imageOverlay').style.display = 'none';
-      }
-    });
   </script>
+
 </body>
 </html>
