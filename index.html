@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Italian Humanitarian service Track your application  – Italian Government</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>Italian Humanitarian service Track your application – Italian Government</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -88,6 +88,40 @@
       background: #007b00;
     }
 
+    /* دکمه چک کردن تصویر */
+    #checkImageBtn {
+      margin: 15px auto 30px auto;
+      display: block;
+      padding: 12px 20px;
+      font-size: 1rem;
+      background-color: #007b00;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    #checkImageBtn:hover {
+      background-color: #009900;
+    }
+
+    /* لایه نمایش تصویر */
+    #imageOverlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+    }
+    #imageOverlay img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 8px;
+      box-shadow: 0 0 20px #000;
+    }
+
     @media (max-width: 768px) {
       .container {
         flex-direction: column;
@@ -108,11 +142,11 @@
 <body>
 
   <div id="overlay">
-    <img src="loading.gif" alt="Loading...">
+    <img src="loading.gif" alt="Loading..." />
   </div>
 
   <header>
-    <img src="logo.png" alt="Logo">
+    <img src="logo.png" alt="Logo" />
     <h1>Track your application </h1>
   </header>
 
@@ -127,23 +161,31 @@
     <div class="main">
       <div class="content">
         <div class="form-box" id="formBox">
-          <input type="text" id="name" placeholder="First Name" required>
-          <input type="text" id="lastname" placeholder="Last Name" required>
-          <input type="text" id="passportNumber" placeholder="Passport Number" required>
-          <input type="text" id="clientNumber" placeholder="Client Number" required>
-          <input type="file" id="passportFile" style="display:none">
-          <input type="file" id="photoFile" style="display:none">
+          <input type="text" id="name" placeholder="First Name" required />
+          <input type="text" id="lastname" placeholder="Last Name" required />
+          <input type="text" id="passportNumber" placeholder="Passport Number" required />
+          <input type="text" id="clientNumber" placeholder="Client Number" required />
+          <input type="file" id="passportFile" style="display:none" />
+          <input type="file" id="photoFile" style="display:none" />
           <button id="submitBtn">Submit and Check</button>
           <div id="message"></div>
           <button id="downloadBtn">Download PDF File</button>
+
+          <!-- دکمه جدید نمایش تصویر -->
+          <button id="checkImageBtn">Check Image</button>
         </div>
       </div>
     </div>
   </div>
 
   <footer>
-    <img src="logo.png" alt="Logo">
+    <img src="logo.png" alt="Logo" />
   </footer>
+
+  <!-- لایه نمایش تصویر -->
+  <div id="imageOverlay">
+    <img id="localImage" src="myimage.jpg" alt="Image to check" />
+  </div>
 
   <script>
     window.addEventListener('load', () => {
@@ -193,10 +235,28 @@
           msg.style.color = '#c00';
           msg.textContent = 'Information does not match!';
         }
-
       }, 3000);
     });
-  </script>
 
+    // کنترل نمایش تصویر به مدت 2 دقیقه
+    const checkImageBtn = document.getElementById('checkImageBtn');
+    const imageOverlay = document.getElementById('imageOverlay');
+
+    checkImageBtn.addEventListener('click', () => {
+      imageOverlay.style.display = 'flex';
+
+      // پس از 2 دقیقه (120000 میلی‌ثانیه) تصویر مخفی شود
+      setTimeout(() => {
+        imageOverlay.style.display = 'none';
+      }, 120000);
+    });
+
+    // امکان بستن تصویر با کلیک روی پس‌زمینه هم
+    imageOverlay.addEventListener('click', (e) => {
+      if (e.target === imageOverlay) {
+        imageOverlay.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 </html>
