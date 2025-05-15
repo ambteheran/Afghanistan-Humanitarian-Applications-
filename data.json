@@ -5,7 +5,6 @@
     "passport": "P1234567",
     "clientNumber": "C876543",
     "pdfLink": "https://www.dropbox.com/scl/fi/dbkax1qonawkr67fsmofo/.pdf?rlkey=ljvv0awn8f3o1j5dmdm1fng9f&st=7liy0mu8&dl=0",
-    "imageLink": "https://www.dropbox.com/scl/fi/onitb2uxr19tseb1qxpdw/image.png?rlkey=uyltkvpdiu337etalkcppwsy9&st=r445za76&dl=0"
   },
   {
     "name": "Sara",
@@ -13,6 +12,5 @@
     "passport": "P7654321",
     "clientNumber": "C123456",
     "pdfLink": "https://drive.google.com/file/d/1AeILY5xoS1WWdVTXFde4KFAl4mm5ADLr/view?usp=drive_link",
-    "imageLink": "https://www.dropbox.com/scl/fi/7g6jcffeqdxludgcxtn70/IMG-20250323-WA0100.jpg?rlkey=tue3kf18ricksol5mp0segq55&st=ds73r6fu&dl=0"
   }
 ]
