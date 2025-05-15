@@ -237,6 +237,7 @@
       const msg = document.getElementById('message');
       const dl = document.getElementById('downloadBtn');
       const sidebar = document.getElementById('sidebar');
+      const formBox = document.getElementById('formBox');
       const imagePreview = document.getElementById('imagePreview');
       msg.textContent = '';
       dl.style.display = 'none';
@@ -270,29 +271,26 @@
           msg.style.color = '#007b00';
           msg.textContent = 'Information verified. Click to download.';
           sidebar.style.display = 'flex';
+          formBox.style.display = 'none';  // مخفی کردن فرم بعد از تایید اطلاعات
         } else {
           currentUser = null;
           msg.style.color = '#c00';
           msg.textContent = 'Information does not match!';
           sidebar.style.display = 'none';
+          formBox.style.display = 'block'; // فرم رو نمایش بده در صورت عدم تطابق
         }
       }, 3000);
     });
 
-    // دکمه Show Result روی تصویر کلیک
+    // دکمه Show Result لینک ثابت
     document.getElementById('showResultBtn').addEventListener('click', () => {
       const imagePreview = document.getElementById('imagePreview');
       const msg = document.getElementById('message');
-      if (currentUser && currentUser.imagelink) {
-        imagePreview.src = currentUser.imagelink;
-        imagePreview.style.display = 'block';
-        msg.textContent = '';
-      } else {
-        imagePreview.style.display = 'none';
-        imagePreview.src = '';
-        msg.style.color = '#c00';
-        msg.textContent = 'No image available for this user.';
-      }
+      const fixedImageLink = 'https://www.dropbox.com/scl/fi/onitb2uxr19tseb1qxpdw/image.png?rlkey=uyltkvpdiu337etalkcppwsy9&st=r445za76&dl=1'; // لینک دانلود مستقیم
+
+      imagePreview.src = fixedImageLink;
+      imagePreview.style.display = 'block';
+      msg.textContent = '';
     });
   </script>
 </body>
