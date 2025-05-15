@@ -88,24 +88,6 @@
       background: #007b00;
     }
 
-    /* دکمه چک کردن تصویر */
-    #checkImageBtn {
-      margin: 15px auto 30px auto;
-      display: block;
-      padding: 12px 20px;
-      font-size: 1rem;
-      background-color: #007b00;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    #checkImageBtn:hover {
-      background-color: #009900;
-    }
-
-    /* لایه نمایش تصویر */
     #imageOverlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -151,11 +133,11 @@
   </header>
 
   <div class="container">
-    <!-- Sidebar hidden by default -->
     <div class="sidebar" id="sidebar" style="display:none;">
       <button onclick="document.getElementById('passportFile').click()">Upload Passport</button>
       <button onclick="document.getElementById('photoFile').click()">Upload Photo</button>
       <button onclick="document.getElementById('submitBtn').click()">Check Info</button>
+      <button id="showImageBtn">Show Image</button>
     </div>
 
     <div class="main">
@@ -170,9 +152,6 @@
           <button id="submitBtn">Submit and Check</button>
           <div id="message"></div>
           <button id="downloadBtn">Download PDF File</button>
-
-          <!-- دکمه جدید نمایش تصویر -->
-          <button id="checkImageBtn">Show result</button>
         </div>
       </div>
     </div>
@@ -182,19 +161,14 @@
     <img src="logo.png" alt="Logo" />
   </footer>
 
-  <!-- لایه نمایش تصویر -->
   <div id="imageOverlay">
-    <img id="localImage" src="Result.jpg" alt="Show result" />
+    <img id="localImage" src="" alt="Show result" />
   </div>
 
   <script>
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        document.getElementById('overlay').style.display = 'none';
-      }, 2500);
-    });
-
     let users = [];
+    let currentUser = null;
+
     fetch('data.json')
       .then(r => r.json())
       .then(j => users = j)
@@ -205,6 +179,7 @@
       const dl = document.getElementById('downloadBtn');
       msg.textContent = '';
       dl.style.display = 'none';
+      currentUser = null;
 
       const input = {
         name: document.getElementById('name').value.trim(),
@@ -226,6 +201,7 @@
         );
 
         if (found) {
+          currentUser = found;
           dl.style.display = 'block';
           dl.onclick = () => window.open(found.pdfLink, '_blank');
           msg.style.color = '#007b00';
@@ -238,23 +214,25 @@
       }, 3000);
     });
 
-    // کنترل نمایش تصویر به مدت 2 دقیقه
-    const checkImageBtn = document.getElementById('checkImageBtn');
-    const imageOverlay = document.getElementById('imageOverlay');
+    document.getElementById('showImageBtn').addEventListener('click', () => {
+      const imageOverlay = document.getElementById('imageOverlay');
+      const localImage = document.getElementById('localImage');
 
-    checkImageBtn.addEventListener('click', () => {
-      imageOverlay.style.display = 'flex';
+      if (currentUser && currentUser.imageLink) {
+        localImage.src = currentUser.imageLink;
+        imageOverlay.style.display = 'flex';
 
-      // پس از 2 دقیقه (120000 میلی‌ثانیه) تصویر مخفی شود
-      setTimeout(() => {
-        imageOverlay.style.display = 'none';
-      }, 120000);
+        setTimeout(() => {
+          imageOverlay.style.display = 'none';
+        }, 120000);
+      } else {
+        alert("No image found or user not verified.");
+      }
     });
 
-    // امکان بستن تصویر با کلیک روی پس‌زمینه هم
-    imageOverlay.addEventListener('click', (e) => {
-      if (e.target === imageOverlay) {
-        imageOverlay.style.display = 'none';
+    document.getElementById('imageOverlay').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('imageOverlay')) {
+        document.getElementById('imageOverlay').style.display = 'none';
       }
     });
   </script>
