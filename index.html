@@ -193,7 +193,7 @@
       <button onclick="document.getElementById('passportFile').click()">Upload Passport</button>
       <button onclick="document.getElementById('photoFile').click()">Upload Photo</button>
       <button onclick="document.getElementById('submitBtn').click()">Check Info</button>
-      <button id="showResultBtn">Show Result</button>
+      <button id="resultBtn">Result</button>
       <img id="imagePreview" src="" alt="Result Image" />
     </div>
 
@@ -282,15 +282,10 @@
       }, 3000);
     });
 
-    // دکمه Show Result لینک ثابت
-    document.getElementById('showResultBtn').addEventListener('click', () => {
-      const imagePreview = document.getElementById('imagePreview');
-      const msg = document.getElementById('message');
-      const fixedImageLink = 'https://www.dropbox.com/scl/fi/onitb2uxr19tseb1qxpdw/image.png?rlkey=uyltkvpdiu337etalkcppwsy9&st=r445za76&dl=1'; // لینک دانلود مستقیم
-
-      imagePreview.src = fixedImageLink;
-      imagePreview.style.display = 'block';
-      msg.textContent = '';
+    // دکمه Result به لینک مشخص هدایت می‌کند
+    document.getElementById('resultBtn').addEventListener('click', () => {
+      const targetLink = 'https://example.com/your-specific-link'; // اینجا لینک مقصد را قرار بده
+      window.location.href = targetLink;
     });
   </script>
 </body>
