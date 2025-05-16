@@ -1,8 +1,5 @@
 [
   {
-    "username": "ali123",
-    "password": "pass123",
-    "ceu": "00123",
     "firstname": "Ali",
     "lastname": "Ahmadi",
     "nationality": "Afghanistan",
@@ -15,9 +12,6 @@
     "link5": "https://example.com/ali/doc5"
   },
   {
-    "username": "fatima456",
-    "password": "secret456",
-    "ceu": "00456",
     "firstname": "Fatima",
     "lastname": "Rahimi",
     "nationality": "Afghanistan",
