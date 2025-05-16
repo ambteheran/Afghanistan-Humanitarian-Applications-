@@ -1,38 +1,32 @@
-{
-  "users": [
-    {
-      "email": "user1@example.com",
-      "password": "password123",
-      "caseNumber": "A001",
-      "firstName": "علی",
-      "lastName": "احمدی",
-      "nationality": "افغانستان",
-      "documentNumber": "P1234567",
-      "dashboardLinks": {
-        "request1": "https://example.com/request1",
-        "result2": "https://example.com/result2",
-        "interview3": "https://example.com/interview3",
-        "passportFile": "https://example.com/passport",
-        "photoFile": "https://example.com/photo"
-      },
-      "dashboardImage": "https://example.com/image-a4.jpg"
-    },
-    {
-      "email": "user2@example.com",
-      "password": "abc123",
-      "caseNumber": "A002",
-      "firstName": "زهرا",
-      "lastName": "محمدی",
-      "nationality": "ایران",
-      "documentNumber": "M7654321",
-      "dashboardLinks": {
-        "request1": "https://example.com/request1-u2",
-        "result2": "https://example.com/result2-u2",
-        "interview3": "https://example.com/interview3-u2",
-        "passportFile": "https://example.com/passport-u2",
-        "photoFile": "https://example.com/photo-u2"
-      },
-      "dashboardImage": "https://example.com/image-a4-u2.jpg"
-    }
-  ]
-}
+[
+  {
+    "username": "ali123",
+    "password": "pass123",
+    "ceu": "00123",
+    "firstname": "Ali",
+    "lastname": "Ahmadi",
+    "nationality": "Afghanistan",
+    "passport": "A12345678",
+    "caseNumber": "7890",
+    "link1": "https://example.com/ali/doc1",
+    "link2": "https://example.com/ali/doc2",
+    "link3": "https://example.com/ali/doc3",
+    "link4": "https://example.com/ali/doc4",
+    "link5": "https://example.com/ali/doc5"
+  },
+  {
+    "username": "fatima456",
+    "password": "secret456",
+    "ceu": "00456",
+    "firstname": "Fatima",
+    "lastname": "Rahimi",
+    "nationality": "Afghanistan",
+    "passport": "B98765432",
+    "caseNumber": "4567",
+    "link1": "https://example.com/fatima/doc1",
+    "link2": "https://example.com/fatima/doc2",
+    "link3": "https://example.com/fatima/doc3",
+    "link4": "https://example.com/fatima/doc4",
+    "link5": "https://example.com/fatima/doc5"
+  }
+]
