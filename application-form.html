@@ -1,0 +1,146 @@
+application-form.html
+
+
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تکمیل اطلاعات</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 500px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #0056b3;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #004494;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+        #loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>تکمیل اطلاعات</h2>
+        <form id="applicationForm">
+            <div class="form-group">
+                <label for="firstName">نام:</label>
+                <input type="text" id="firstName" name="firstName" required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">تخلص:</label>
+                <input type="text" id="lastName" name="lastName" required>
+            </div>
+            <div class="form-group">
+                <label for="nationality">ملیت:</label>
+                <input type="text" id="nationality" name="nationality" required>
+            </div>
+            <div class="form-group">
+                <label for="nationalId">شماره پاسپورت و یا کارت ملی:</label>
+                <input type="text" id="nationalId" name="nationalId" required>
+            </div>
+            <div class="form-group">
+                <label for="recordNumberDisplay">نمبر پرونده:</label>
+                <input type="text" id="recordNumberDisplay" name="recordNumberDisplay" readonly>
+            </div>
+            <button type="submit">تایید و ادامه</button>
+            <div id="errorMessage" class="error-message"></div>
+            <div id="loading">
+                <img src="loading.gif" alt="در حال بارگذاری...">
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const applicationForm = document.getElementById('applicationForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const loading = document.getElementById('loading');
+        const recordNumberDisplay = document.getElementById('recordNumberDisplay');
+        const recordNumber = sessionStorage.getItem('recordNumber');
+
+        if (!recordNumber) {
+            window.location.href = 'index.html'; // اگر نمبر پرونده نباشد به صفحه ورود برگرد
+        } else {
+            recordNumberDisplay.value = recordNumber;
+        }
+
+        applicationForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            errorMessage.textContent = '';
+            loading.style.display = 'block';
+
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const nationality = document.getElementById('nationality').value;
+            const nationalId = document.getElementById('nationalId').value;
+
+            fetch('Data.json')
+                .then(response => response.json())
+                .then(data => {
+                    const user = data.find(user => user.recordNumber === recordNumber);
+
+                    if (user && user.firstName === firstName && user.lastName === lastName && user.nationality === nationality && user.nationalId === nationalId) {
+                        loading.style.display = 'none';
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        errorMessage.textContent = 'اطلاعات وارد شده مطابقت ندارد.';
+                        loading.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('خطا در خواندن فایل JSON:', error);
+                    errorMessage.textContent = 'خطا در برقراری ارتباط.';
+                    loading.style.display = 'none';
+                });
+        });
+    </script>
+</body>
+</html>
