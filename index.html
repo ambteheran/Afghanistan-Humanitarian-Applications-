@@ -1,378 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Official Dashboard</title>
+  <meta charset="UTF-8">
+  <title>Login Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    /* ریست و پایه */
-    * {
-      box-sizing: border-box;
-    }
-    body, html {
-      margin: 0; padding: 0;
-      height: 100%;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f8f9fa;
-      color: #333;
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      min-height: 100vh;
     }
-
-    /* --- صفحه لاگین --- */
-    #loginPage {
-      background: white;
-      padding: 40px 50px;
-      border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-      width: 350px;
-      text-align: center;
-    }
-    #loginPage h2 {
-      margin-bottom: 25px;
-      color: #0d6efd;
-      font-weight: 700;
-      font-size: 1.8rem;
-    }
-    #loginPage input[type="text"], #loginPage input[type="password"] {
-      width: 100%;
-      padding: 12px 15px;
-      margin: 12px 0;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: border-color 0.3s;
-    }
-    #loginPage input[type="text"]:focus, #loginPage input[type="password"]:focus {
-      border-color: #0d6efd;
-      outline: none;
-    }
-    #loginPage button {
-      width: 100%;
-      background: #0d6efd;
+    header, footer {
+      background-color: #003366;
       color: white;
-      border: none;
-      padding: 14px 0;
+      text-align: center;
+      width: 100%;
+      padding: 10px;
+    }
+    .form-container {
+      background: white;
       margin-top: 20px;
-      font-size: 1.1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 700;
-      transition: background 0.3s;
-    }
-    #loginPage button:hover {
-      background: #0b5ed7;
-    }
-    #loginError {
-      color: #dc3545;
-      margin-top: 10px;
-      font-weight: 600;
-    }
-
-    /* --- داشبورد --- */
-    #dashboard {
-      display: none;
-      height: 90vh;
-      width: 100%;
-      max-width: 1200px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-      display: flex;
-      flex-direction: column;
-    }
-    header {
-      display: flex;
-      align-items: center;
-      background: #0d6efd;
-      color: white;
-      padding: 10px 20px;
-      gap: 15px;
-      border-radius: 12px 12px 0 0;
-    }
-    header img.logo {
-      height: 50px;
-    }
-    header .upload-btns {
-      margin-left: auto;
-      display: flex;
-      gap: 15px;
-    }
-    header .upload-btns button {
-      background: white;
-      color: #0d6efd;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 5px;
-      cursor: not-allowed; /* چون disabled */
-      font-weight: 600;
-      transition: background 0.3s;
-    }
-    main {
-      flex: 1;
-      display: flex;
-      overflow: hidden;
-    }
-    nav.sidebar {
-      width: 220px;
-      background: #212529;
-      color: white;
-      display: flex;
-      flex-direction: column;
       padding: 20px;
-      gap: 10px;
-      overflow-y: auto;
-    }
-    nav.sidebar button {
-      background: transparent;
-      border: none;
-      color: white;
-      padding: 12px;
-      text-align: left;
-      cursor: pointer;
-      font-size: 16px;
-      border-radius: 5px;
-      transition: background 0.3s;
-    }
-    nav.sidebar button:hover {
-      background: #0d6efd;
-    }
-    section.content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-      padding: 30px 40px;
-      background: #fefefe;
-      overflow-y: auto;
-      gap: 25px;
-    }
-    section.content img {
-      max-width: 100%;
-      height: auto;
-      border: 1px solid #ccc;
-      box-shadow: 0 0 8px rgba(0,0,0,0.1);
-      border-radius: 8px;
-    }
-    section.content form {
-      width: 100%;
-      max-width: 500px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    section.content form label {
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: #444;
-    }
-    section.content form input[type="text"], 
-    section.content form input[type="email"],
-    section.content form input[type="number"] {
-      padding: 12px 15px;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: border-color 0.3s;
-    }
-    section.content form input[type="text"]:focus, 
-    section.content form input[type="email"]:focus,
-    section.content form input[type="number"]:focus {
-      border-color: #0d6efd;
-      outline: none;
-    }
-    section.content form button.submit-btn {
-      background: #0d6efd;
-      color: white;
-      padding: 14px;
-      border: none;
       border-radius: 10px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      font-weight: 700;
-      transition: background 0.3s;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 400px;
     }
-    section.content form button.submit-btn:hover {
-      background: #0b5ed7;
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
     }
-
-    footer {
-      background: #0d6efd;
+    button {
+      background: #003366;
       color: white;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
+    .loading {
+      display: none;
+      margin-top: 10px;
       text-align: center;
-      padding: 12px 10px;
-      font-weight: 600;
-      border-radius: 0 0 12px 12px;
     }
-
-    /* پیام خطا */
-    .error {
-      color: #dc3545;
-      font-weight: 600;
-      margin-top: 5px;
-      font-size: 0.9rem;
-    }
-
-    /* پاسخگویی موبایل */
-    @media (max-width: 768px) { 
-      #dashboard main { 
-        flex-direction: column; 
-      } 
-      nav.sidebar { 
-        width: 100%; 
-        flex-direction: row; 
-        overflow-x: auto; 
-      } 
-      nav.sidebar button { 
-        flex: 1 0 auto; 
-        text-align: center; 
-      }
-      section.content form {
-        max-width: 100%;
+    @media (max-width: 600px) {
+      .form-container {
+        width: 95%;
       }
     }
   </style>
 </head>
 <body>
 
-<!-- صفحه لاگین -->
-<div id="loginPage">
-  <h2>Login to Dashboard</h2>
-  <input type="text" id="username" placeholder="Username" autocomplete="off" />
-  <input type="password" id="password" placeholder="Password" autocomplete="off" />
-  <button id="loginBtn">Login</button>
-  <div id="loginError"></div>
+<header>
+  <img src="logo.png" height="40">
+  <h2>Login System</h2>
+</header>
+
+<!-- Step 1: Login -->
+<div class="form-container" id="login-form">
+  <input type="text" id="username" placeholder="Username" required>
+  <input type="password" id="password" placeholder="Password" required>
+  <input type="text" id="ceu" placeholder="CEU Number" required>
+  <button onclick="verifyLogin()">Login</button>
+  <div class="loading" id="loading1">
+    <img src="loading.gif" width="40"><br>Loading...
+  </div>
 </div>
 
-<!-- صفحه داشبورد -->
-<div id="dashboard">
-  <header>
-    <img src="logo.png" alt="Logo" class="logo" />
-    <div class="upload-btns">
-      <button id="uploadPassportBtn" disabled>Upload Passport (PDF)</button>
-      <button id="uploadImageBtn" disabled>Upload Image (PDF)</button>
-    </div>
-  </header>
-  <main>
-    <nav class="sidebar" id="sidebarLinks">
-      <!-- دکمه‌ها اینجا اضافه می‌شوند -->
-    </nav>  
-    <section class="content">
-      <form id="userInfoForm">
-        <label for="fullName">Full Name</label>
-        <input type="text" id="fullName" placeholder="Enter your full name" required />
-
-        <label for="email">Email Address</label>
-        <input type="email" id="email" placeholder="Enter your email" required />
-
-        <label for="phone">Phone Number</label>
-        <input type="text" id="phone" placeholder="Enter your phone number" required />
-
-        <label for="address">Address</label>
-        <input type="text" id="address" placeholder="Enter your address" required />
-
-        <label for="nationalId">National ID</label>
-        <input type="text" id="nationalId" placeholder="Enter your national ID" required />
-
-        <button type="submit" class="submit-btn">Submit</button>
-      </form>
-    </section>
-  </main>
-  <footer>
-    Official Portal Dashboard
-  </footer>
+<!-- Step 2: Personal Info -->
+<div class="form-container hidden" id="info-form">
+  <input type="text" id="fname" placeholder="اسم">
+  <input type="text" id="lname" placeholder="تخلص">
+  <input type="text" id="nationality" placeholder="ملیت">
+  <input type="text" id="passport" placeholder="شماره پاسپورت یا کارت ملی">
+  <input type="text" id="caseNumber" placeholder="شماره پرونده">
+  <button onclick="verifyData()">Submit</button>
+  <div class="loading" id="loading2">
+    <img src="loading.gif" width="40"><br>Processing...
+  </div>
 </div>
+
+<!-- Step 3: Dashboard -->
+<div class="form-container hidden" id="dashboard">
+  <h3>خوش آمدید</h3>
+  <button id="btn1">مدرک 1</button>
+  <button id="btn2">مدرک 2</button>
+  <button id="btn3">مدرک 3</button>
+  <button id="btn4">مدرک 4</button>
+  <button id="btn5">مدرک 5</button>
+</div>
+
+<footer>
+  <img src="logo.png" height="40">
+  <p>Powered by You</p>
+</footer>
 
 <script>
-  // داده‌های تستی برای لینک‌ها - فرض می‌کنیم کاربر لاگین شده است و لینک‌ها آماده‌اند
-  const currentUser = {
-    link1: "https://example.com/doc1",
-    link2: "https://example.com/doc2",
-    link3: "https://example.com/doc3",
-    link4: "https://example.com/doc4",
-    link5: "https://example.com/doc5"
-  };
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbwhwCOA4J-b-YfCdAkGAPCMoeesqq_zOAQ-tNYg0os8qBIYGeq-HKNwQI3GA37lMM3JqA/exec';
 
-  const loginPage = document.getElementById('loginPage');
-  const dashboard = document.getElementById('dashboard');
-  const loginBtn = document.getElementById('loginBtn');
-  const loginError = document.getElementById('loginError');
-  const sidebar = document.getElementById('sidebarLinks');
-  const userInfoForm = document.getElementById('userInfoForm');
+  function verifyLogin() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const ceu = document.getElementById("ceu").value;
 
-  let logoutTimer;
+    document.getElementById("loading1").style.display = "block";
 
-  // تابع شروع تایمر 10 دقیقه (600000 میلی‌ثانیه)
-  function startLogoutTimer() {
-    if (logoutTimer) clearTimeout(logoutTimer);
-    logoutTimer = setTimeout(() => {
-      alert("Session expired. Please login again.");
-      logout();
-    }, 600000); // 10 دقیقه
+    fetch(${scriptURL}?username=${username}&password=${password}&ceu=${ceu})
+      .then(res => res.json())
+      .then(data => {
+        setTimeout(() => {
+          document.getElementById("loading1").style.display = "none";
+          if (data.success) {
+            document.getElementById("login-form").classList.add("hidden");
+            document.getElementById("info-form").classList.remove("hidden");
+          } else {
+            alert("اطلاعات وارد شده نادرست است.");
+          }
+        }, 5000);
+      });
   }
 
-  // ورود به داشبورد
-  function login() {
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
+  function verifyData() {
+    const fname = document.getElementById("fname").value;
+    const lname = document.getElementById("lname").value;
+    const nationality = document.getElementById("nationality").value;
+    const passport = document.getElementById("passport").value;
+    const caseNumber = document.getElementById("caseNumber").value;
 
-    // اعتبارسنجی ساده (برای تست)
-    if(username === "admin" && password === "password") {
-      loginPage.style.display = "none";
-      dashboard.style.display = "flex";
-      loginError.textContent = "";
-      loadSidebarButtons();
-      startLogoutTimer();
-    } else {
-      loginError.textContent = "Invalid username or password!";
-    }
+    document.getElementById("loading2").style.display = "block";
+
+    fetch("data.json")
+      .then(response => response.json())
+      .then(json => {
+        setTimeout(() => {
+          document.getElementById("loading2").style.display = "none";
+
+          const found = json.find(item =>
+            item.firstname === fname &&
+            item.lastname === lname &&
+            item.nationality === nationality &&
+            item.passport === passport &&
+            item.caseNumber === caseNumber
+          );
+
+          if (found) {
+            document.getElementById("info-form").classList.add("hidden");
+            document.getElementById("dashboard").classList.remove("hidden");
+
+            document.getElementById("btn1").onclick = () => location.href = found.link1;
+            document.getElementById("btn2").onclick = () => location.href = found.link2;
+            document.getElementById("btn3").onclick = () => location.href = found.link3;
+            document.getElementById("btn4").onclick = () => location.href = found.link4;
+            document.getElementById("btn5").onclick = () => location.href = found.link5;
+          } else {
+            alert("اطلاعات شما در سیستم پیدا نشد.");
+          }
+        }, 5000);
+      });
   }
-
-  // خروج و برگشت به صفحه لاگین
-  function logout() {
-    dashboard.style.display = "none";
-    loginPage.style.display = "block";
-    loginError.textContent = "";
-    clearTimeout(logoutTimer);
-    // پاک کردن فرم لاگین و فرم اطلاعات کاربر
-    document.getElementById('username').value = "";
-    document.getElementById('password').value = "";
-    userInfoForm.reset();
-  }
-
-  loginBtn.addEventListener('click', login);
-
-  // ساخت دکمه‌های سایدبار با لینک
-  function loadSidebarButtons() {
-    sidebar.innerHTML = ""; // پاک کردن قبلی
-    for(let i=1; i<=5; i++) {
-      const btn = document.createElement('button');
-      btn.textContent = "Document " + i;
-      btn.onclick = () => {
-        window.location.href = currentUser['link' + i];
-      };
-      sidebar.appendChild(btn);
-    }
-  }
-
-  // با هر تعامل کاربر تایمر ریست می‌شود (برای جلوگیری از logout ناخواسته)
-  ['click', 'mousemove', 'keydown', 'scroll'].forEach(evt => {
-    document.addEventListener(evt, () => {
-      if (dashboard.style.display === "flex") {
-        startLogoutTimer();
-      }
-    });
-  });
-
-  // مدیریت ارسال فرم اطلاعات کاربر
-  userInfoForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert("Form submitted successfully!");
-    // می توانید اینجا پردازش فرم را انجام دهید یا داده‌ها را ارسال کنید.
-  });
 </script>
 
 </body>
