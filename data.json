@@ -9,17 +9,5 @@
   "caseNumber": "12345",
   "image": "images/john.jpg",
   "link1": "https://example.com/doc1.pdf",
+  ...
 }
-  {
-  "username": "john",
-  "password": "1234",
-  "ceu": "9876",
-  "firstname": "John",
-  "lastname": "Doe",
-  "nationality": "USA",
-  "passport": "AB123456",
-  "caseNumber": "12345",
-  "image": "images/john.jpg",
-  "link1": "https://example.com/doc1.pdf",
-  }
-]
