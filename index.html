@@ -6,32 +6,21 @@
   <title>Login Panel</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f8f9fa;
+      font-family: sans-serif;
+      text-align: center;
+      padding: 20px;
     }
     header, footer {
-      background: #003366;
-      color: white;
       display: flex;
+      justify-content: space-between;
       align-items: center;
       padding: 10px 20px;
+      background: #f0f0f0;
     }
-    header img, footer img {
-      width: 50px;
-      margin-right: 10px;
-    }
-    header h2, footer h4 {
-      margin: 0;
-    }
-    .form-group, .info-group {
-      margin: 30px auto;
+    .form-group, .info-group, .links {
+      margin: 20px auto;
       max-width: 400px;
-      padding: 20px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: left;
     }
     input, button {
       width: 100%;
@@ -41,46 +30,9 @@
     .loading {
       display: none;
     }
-    .dashboard {
-      display: flex;
-      height: calc(100vh - 140px);
-    }
-    .sidebar {
-      width: 200px;
-      background: #e9ecef;
-      padding: 20px;
-      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-    }
-    .sidebar button {
-      display: block;
-      width: 100%;
-      margin-bottom: 15px;
-      padding: 10px;
-      background: #003366;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      text-align: left;
-    }
-    .content {
-      flex: 1;
-      padding: 30px;
-      text-align: center;
-    }
-    .content img {
-      max-width: 300px;
-      border-radius: 10px;
-    }
-    #logoutBtn {
-      background: darkred;
-      margin-top: 40px;
-    }
     @media screen and (max-width: 600px) {
-      .dashboard {
+      header, footer {
         flex-direction: column;
-      }
-      .sidebar {
-        width: 100%;
       }
     }
   </style>
@@ -88,8 +40,8 @@
 <body>
 
 <header>
-  <img src="logo.png" alt="Logo" />
-  <h2>Login Portal - Republic of Italy</h2>
+  <img src="logo.png" alt="Logo" width="50"/>
+  <h2>Login Portal</h2>
 </header>
 
 <div class="form-group" id="loginForm">
@@ -112,30 +64,22 @@
   <p id="errorMsg2" style="color:red;"></p>
 </div>
 
-<div id="dashboard" class="dashboard" style="display:none;">
-  <div class="sidebar">
-    <button id="link1"></button>
-    <button id="link2"></button>
-    <button id="link3"></button>
-    <button id="link4"></button>
-    <button id="link5"></button>
-    <button id="logoutBtn" onclick="logout()">Logout</button>
-  </div>
-  <div class="content">
-    <h3>Welcome to your Dashboard</h3>
-    <img id="userImage" src="" alt="User Photo" />
-  </div>
+<div class="links" id="linksPanel" style="display:none;">
+  <button id="link1"></button>
+  <button id="link2"></button>
+  <button id="link3"></button>
+  <button id="link4"></button>
+  <button id="link5"></button>
 </div>
 
 <footer>
-  <img src="logo.png" alt="Logo" />
-  <h4>Official Portal of the Republic of Italy</h4>
+  <img src="logo.png" alt="Logo" width="40" />
+  <h4>Official Portal</h4>
 </footer>
 
 <script>
 let currentUser = null;
 let userData = [];
-let sessionTimer = null;
 
 fetch("data.json")
   .then(response => response.json())
@@ -143,7 +87,7 @@ fetch("data.json")
 
 function showLoading(id) {
   document.getElementById(id).style.display = "inline-block";
-  return new Promise(res => setTimeout(res, 2000));
+  return new Promise(res => setTimeout(res, 5000));
 }
 
 async function validateLogin() {
@@ -152,7 +96,9 @@ async function validateLogin() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
   const ceu = document.getElementById("ceu").value;
+
   const match = userData.find(u => u.username === username && u.password === password && u.ceu === ceu);
+
   document.getElementById("loading1").style.display = "none";
 
   if (match) {
@@ -167,11 +113,13 @@ async function validateLogin() {
 async function validatePersonal() {
   document.getElementById("errorMsg2").innerText = "";
   await showLoading("loading2");
+
   const fname = document.getElementById("firstname").value;
   const lname = document.getElementById("lastname").value;
   const nat = document.getElementById("nationality").value;
   const pass = document.getElementById("passport").value;
   const caseNum = document.getElementById("caseNumber").value;
+
   document.getElementById("loading2").style.display = "none";
 
   if (
@@ -182,34 +130,20 @@ async function validatePersonal() {
     caseNum === currentUser.caseNumber
   ) {
     document.getElementById("infoForm").style.display = "none";
-    document.getElementById("dashboard").style.display = "flex";
+    document.getElementById("linksPanel").style.display = "block";
 
     for (let i = 1; i <= 5; i++) {
       const btn = document.getElementById("link" + i);
       btn.innerText = "Document " + i;
       btn.onclick = () => {
+        // باز کردن بدون تب جدید
         fetch(currentUser["link" + i])
           .then(() => window.location.href = currentUser["link" + i]);
       };
     }
-
-    // Load image
-    document.getElementById("userImage").src = currentUser.image;
-
-    // Session timeout
-    sessionTimer = setTimeout(() => {
-      alert("Session expired. Logging out.");
-      logout();
-    }, 5 * 60 * 1000); // 5 minutes
-
   } else {
     document.getElementById("errorMsg2").innerText = "Personal info doesn't match.";
   }
-}
-
-function logout() {
-  clearTimeout(sessionTimer);
-  window.location.reload();
 }
 </script>
 
