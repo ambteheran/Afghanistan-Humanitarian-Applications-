@@ -8,11 +8,9 @@
     "nationality": "Afghanistan",
     "passport": "A12345678",
     "caseNumber": "7890",
-    "link1": "https://example.com/ali/doc1",
-    "link2": "https://example.com/ali/doc2",
-    "link3": "https://example.com/ali/doc3",
-    "link4": "https://example.com/ali/doc4",
-    "link5": "https://example.com/ali/doc5"
+    "Request letter": "https://example.com/ali/doc1",
+    "Application Form": "https://example.com/ali/doc2",
+    "Result": "https://example.com/ali/doc3",
   },
   {
     "username": "fatima456",
