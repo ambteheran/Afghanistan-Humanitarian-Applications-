@@ -1,379 +1,130 @@
+index.htm. 
+
+
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Official Dashboard</title>
-  <style>
-    /* ریست و پایه */
-    * {
-      box-sizing: border-box;
-    }
-    body, html {
-      margin: 0; padding: 0;
-      height: 100%;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f8f9fa;
-      color: #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    /* --- صفحه لاگین --- */
-    #loginPage {
-      background: white;
-      padding: 40px 50px;
-      border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-      width: 350px;
-      text-align: center;
-    }
-    #loginPage h2 {
-      margin-bottom: 25px;
-      color: #0d6efd;
-      font-weight: 700;
-      font-size: 1.8rem;
-    }
-    #loginPage input[type="text"], #loginPage input[type="password"] {
-      width: 100%;
-      padding: 12px 15px;
-      margin: 12px 0;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: border-color 0.3s;
-    }
-    #loginPage input[type="text"]:focus, #loginPage input[type="password"]:focus {
-      border-color: #0d6efd;
-      outline: none;
-    }
-    #loginPage button {
-      width: 100%;
-      background: #0d6efd;
-      color: white;
-      border: none;
-      padding: 14px 0;
-      margin-top: 20px;
-      font-size: 1.1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 700;
-      transition: background 0.3s;
-    }
-    #loginPage button:hover {
-      background: #0b5ed7;
-    }
-    #loginError {
-      color: #dc3545;
-      margin-top: 10px;
-      font-weight: 600;
-    }
-
-    /* --- داشبورد --- */
-    #dashboard {
-      display: none;
-      height: 90vh;
-      width: 100%;
-      max-width: 1200px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-      display: flex;
-      flex-direction: column;
-    }
-    header {
-      display: flex;
-      align-items: center;
-      background: #0d6efd;
-      color: white;
-      padding: 10px 20px;
-      gap: 15px;
-      border-radius: 12px 12px 0 0;
-    }
-    header img.logo {
-      height: 50px;
-    }
-    header .upload-btns {
-      margin-left: auto;
-      display: flex;
-      gap: 15px;
-    }
-    header .upload-btns button {
-      background: white;
-      color: #0d6efd;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 5px;
-      cursor: not-allowed; /* چون disabled */
-      font-weight: 600;
-      transition: background 0.3s;
-    }
-    main {
-      flex: 1;
-      display: flex;
-      overflow: hidden;
-    }
-    nav.sidebar {
-      width: 220px;
-      background: #212529;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      padding: 20px;
-      gap: 10px;
-      overflow-y: auto;
-    }
-    nav.sidebar button {
-      background: transparent;
-      border: none;
-      color: white;
-      padding: 12px;
-      text-align: left;
-      cursor: pointer;
-      font-size: 16px;
-      border-radius: 5px;
-      transition: background 0.3s;
-    }
-    nav.sidebar button:hover {
-      background: #0d6efd;
-    }
-    section.content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-      padding: 30px 40px;
-      background: #fefefe;
-      overflow-y: auto;
-      gap: 25px;
-    }
-    section.content img {
-      max-width: 100%;
-      height: auto;
-      border: 1px solid #ccc;
-      box-shadow: 0 0 8px rgba(0,0,0,0.1);
-      border-radius: 8px;
-    }
-    section.content form {
-      width: 100%;
-      max-width: 500px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    section.content form label {
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: #444;
-    }
-    section.content form input[type="text"], 
-    section.content form input[type="email"],
-    section.content form input[type="number"] {
-      padding: 12px 15px;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: border-color 0.3s;
-    }
-    section.content form input[type="text"]:focus, 
-    section.content form input[type="email"]:focus,
-    section.content form input[type="number"]:focus {
-      border-color: #0d6efd;
-      outline: none;
-    }
-    section.content form button.submit-btn {
-      background: #0d6efd;
-      color: white;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      font-weight: 700;
-      transition: background 0.3s;
-    }
-    section.content form button.submit-btn:hover {
-      background: #0b5ed7;
-    }
-
-    footer {
-      background: #0d6efd;
-      color: white;
-      text-align: center;
-      padding: 12px 10px;
-      font-weight: 600;
-      border-radius: 0 0 12px 12px;
-    }
-
-    /* پیام خطا */
-    .error {
-      color: #dc3545;
-      font-weight: 600;
-      margin-top: 5px;
-      font-size: 0.9rem;
-    }
-
-    /* پاسخگویی موبایل */
-    @media (max-width: 768px) { 
-      #dashboard main { 
-        flex-direction: column; 
-      } 
-      nav.sidebar { 
-        width: 100%; 
-        flex-direction: row; 
-        overflow-x: auto; 
-      } 
-      nav.sidebar button { 
-        flex: 1 0 auto; 
-        text-align: center; 
-      }
-      section.content form {
-        max-width: 100%;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحه ورود</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="email"],
+        input[type="password"],
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #0056b3;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #004494;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+        #loading {
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-
-<!-- صفحه لاگین -->
-<div id="loginPage">
-  <h2>Login to Dashboard</h2>
-  <input type="text" id="username" placeholder="Username" autocomplete="off" />
-  <input type="password" id="password" placeholder="Password" autocomplete="off" />
-  <button id="loginBtn">Login</button>
-  <div id="loginError"></div>
-</div>
-
-<!-- صفحه داشبورد -->
-<div id="dashboard">
-  <header>
-    <img src="logo.png" alt="Logo" class="logo" />
-    <div class="upload-btns">
-      <button id="uploadPassportBtn" disabled>Upload Passport (PDF)</button>
-      <button id="uploadImageBtn" disabled>Upload Image (PDF)</button>
+    <div class="container">
+        <h2>ورود به سیستم</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">ایمیل آدرس:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">رمز ورود:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="recordNumber">نمبر پرونده:</label>
+                <input type="text" id="recordNumber" name="recordNumber" required>
+            </div>
+            <button type="submit">ورود</button>
+            <div id="errorMessage" class="error-message"></div>
+            <img id="loading" src="loading.gif" alt="در حال بارگذاری...">
+        </form>
     </div>
-  </header>
-  <main>
-    <nav class="sidebar" id="sidebarLinks">
-      <!-- دکمه‌ها اینجا اضافه می‌شوند -->
-    </nav>  
-    <section class="content">
-      <form id="userInfoForm">
-        <label for="fullName">Full Name</label>
-        <input type="text" id="fullName" placeholder="Enter your full name" required />
 
-        <label for="email">Email Address</label>
-        <input type="email" id="email" placeholder="Enter your email" required />
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const loading = document.getElementById('loading');
 
-        <label for="phone">Phone Number</label>
-        <input type="text" id="phone" placeholder="Enter your phone number" required />
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            errorMessage.textContent = '';
+            loading.style.display = 'block';
 
-        <label for="address">Address</label>
-        <input type="text" id="address" placeholder="Enter your address" required />
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const recordNumber = document.getElementById('recordNumber').value;
 
-        <label for="nationalId">National ID</label>
-        <input type="text" id="nationalId" placeholder="Enter your national ID" required />
+            fetch('Data.json')
+                .then(response => response.json())
+                .then(data => {
+                    const user = data.find(user =>
+                        user.email === email &&
+                        user.password === password &&
+                        user.recordNumber === recordNumber
+                    );
 
-        <button type="submit" class="submit-btn">Submit</button>
-      </form>
-    </section>
-  </main>
-  <footer>
-    Official Portal Dashboard
-  </footer>
-</div>
+                    loading.style.display = 'none';
 
-<script>
-  // داده‌های تستی برای لینک‌ها - فرض می‌کنیم کاربر لاگین شده است و لینک‌ها آماده‌اند
-  const currentUser = {
-    link1: "https://example.com/doc1",
-    link2: "https://example.com/doc2",
-    link3: "https://example.com/doc3",
-    link4: "https://example.com/doc4",
-    link5: "https://example.com/doc5"
-  };
-
-  const loginPage = document.getElementById('loginPage');
-  const dashboard = document.getElementById('dashboard');
-  const loginBtn = document.getElementById('loginBtn');
-  const loginError = document.getElementById('loginError');
-  const sidebar = document.getElementById('sidebarLinks');
-  const userInfoForm = document.getElementById('userInfoForm');
-
-  let logoutTimer;
-
-  // تابع شروع تایمر 10 دقیقه (600000 میلی‌ثانیه)
-  function startLogoutTimer() {
-    if (logoutTimer) clearTimeout(logoutTimer);
-    logoutTimer = setTimeout(() => {
-      alert("Session expired. Please login again.");
-      logout();
-    }, 600000); // 10 دقیقه
-  }
-
-  // ورود به داشبورد
-  function login() {
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-
-    // اعتبارسنجی ساده (برای تست)
-    if(username === "admin" && password === "password") {
-      loginPage.style.display = "none";
-      dashboard.style.display = "flex";
-      loginError.textContent = "";
-      loadSidebarButtons();
-      startLogoutTimer();
-    } else {
-      loginError.textContent = "Invalid username or password!";
-    }
-  }
-
-  // خروج و برگشت به صفحه لاگین
-  function logout() {
-    dashboard.style.display = "none";
-    loginPage.style.display = "block";
-    loginError.textContent = "";
-    clearTimeout(logoutTimer);
-    // پاک کردن فرم لاگین و فرم اطلاعات کاربر
-    document.getElementById('username').value = "";
-    document.getElementById('password').value = "";
-    userInfoForm.reset();
-  }
-
-  loginBtn.addEventListener('click', login);
-
-  // ساخت دکمه‌های سایدبار با لینک
-  function loadSidebarButtons() {
-    sidebar.innerHTML = ""; // پاک کردن قبلی
-    for(let i=1; i<=5; i++) {
-      const btn = document.createElement('button');
-      btn.textContent = "Document " + i;
-      btn.onclick = () => {
-        window.location.href = currentUser['link' + i];
-      };
-      sidebar.appendChild(btn);
-    }
-  }
-
-  // با هر تعامل کاربر تایمر ریست می‌شود (برای جلوگیری از logout ناخواسته)
-  ['click', 'mousemove', 'keydown', 'scroll'].forEach(evt => {
-    document.addEventListener(evt, () => {
-      if (dashboard.style.display === "flex") {
-        startLogoutTimer();
-      }
-    });
-  });
-
-  // مدیریت ارسال فرم اطلاعات کاربر
-  userInfoForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert("Form submitted successfully!");
-    // می توانید اینجا پردازش فرم را انجام دهید یا داده‌ها را ارسال کنید.
-  });
-</script>
-
+                    if (user) {
+                        // ذخیره شماره پرونده برای صفحه بعد
+                        sessionStorage.setItem('recordNumber', recordNumber);
+                        window.location.href = 'application-form.html';
+                    } else {
+                        errorMessage.textContent = 'ایمیل، رمز ورود یا نمبر پرونده اشتباه است.';
+                    }
+                })
+                .catch(error => {
+                    console.error('خطا در خواندن فایل JSON:', error);
+                    errorMessage.textContent = 'خطا در برقراری ارتباط.';
+                    loading.style.display = 'none';
+                });
+        });
+    </script>
 </body>
 </html>
