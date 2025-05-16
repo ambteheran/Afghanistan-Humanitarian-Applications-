@@ -16,8 +16,72 @@
       background: #f8f9fa;
       color: #333;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       min-height: 100vh;
+    }
+
+    /* --- صفحه لاگین --- */
+    #loginPage {
+      background: white;
+      padding: 40px 50px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      width: 350px;
+      text-align: center;
+    }
+    #loginPage h2 {
+      margin-bottom: 25px;
+      color: #0d6efd;
+      font-weight: 700;
+      font-size: 1.8rem;
+    }
+    #loginPage input[type="text"], #loginPage input[type="password"] {
+      width: 100%;
+      padding: 12px 15px;
+      margin: 12px 0;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    #loginPage input[type="text"]:focus, #loginPage input[type="password"]:focus {
+      border-color: #0d6efd;
+      outline: none;
+    }
+    #loginPage button {
+      width: 100%;
+      background: #0d6efd;
+      color: white;
+      border: none;
+      padding: 14px 0;
+      margin-top: 20px;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background 0.3s;
+    }
+    #loginPage button:hover {
+      background: #0b5ed7;
+    }
+    #loginError {
+      color: #dc3545;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    /* --- داشبورد --- */
+    #dashboard {
+      display: none;
+      height: 90vh;
+      width: 100%;
+      max-width: 1200px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
     }
     header {
       display: flex;
@@ -26,6 +90,7 @@
       color: white;
       padding: 10px 20px;
       gap: 15px;
+      border-radius: 12px 12px 0 0;
     }
     header img.logo {
       height: 50px;
@@ -41,16 +106,9 @@
       border: none;
       padding: 8px 15px;
       border-radius: 5px;
-      cursor: pointer;
+      cursor: not-allowed; /* چون disabled */
       font-weight: 600;
       transition: background 0.3s;
-    }
-    header .upload-btns button:hover:not(:disabled) {
-      background: #cfe2ff;
-    }
-    header .upload-btns button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
     }
     main {
       flex: 1;
@@ -65,6 +123,7 @@
       flex-direction: column;
       padding: 20px;
       gap: 10px;
+      overflow-y: auto;
     }
     nav.sidebar button {
       background: transparent;
@@ -83,23 +142,70 @@
     section.content {
       flex: 1;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      justify-content: flex-start;
       align-items: center;
-      padding: 20px;
-      background: white;
+      padding: 30px 40px;
+      background: #fefefe;
+      overflow-y: auto;
+      gap: 25px;
     }
     section.content img {
       max-width: 100%;
       height: auto;
       border: 1px solid #ccc;
       box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      border-radius: 8px;
     }
+    section.content form {
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    section.content form label {
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #444;
+    }
+    section.content form input[type="text"], 
+    section.content form input[type="email"],
+    section.content form input[type="number"] {
+      padding: 12px 15px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    section.content form input[type="text"]:focus, 
+    section.content form input[type="email"]:focus,
+    section.content form input[type="number"]:focus {
+      border-color: #0d6efd;
+      outline: none;
+    }
+    section.content form button.submit-btn {
+      background: #0d6efd;
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background 0.3s;
+    }
+    section.content form button.submit-btn:hover {
+      background: #0b5ed7;
+    }
+
     footer {
       background: #0d6efd;
       color: white;
       text-align: center;
       padding: 12px 10px;
       font-weight: 600;
+      border-radius: 0 0 12px 12px;
     }
 
     /* پیام خطا */
@@ -111,166 +217,163 @@
     }
 
     /* پاسخگویی موبایل */
-    @media (max-width: 768px) {
-      main {
-        flex-direction: column;
+    @media (max-width: 768px) { 
+      #dashboard main { 
+        flex-direction: column; 
+      } 
+      nav.sidebar { 
+        width: 100%; 
+        flex-direction: row; 
+        overflow-x: auto; 
+      } 
+      nav.sidebar button { 
+        flex: 1 0 auto; 
+        text-align: center; 
       }
-      nav.sidebar {
-        width: 100%;
-        flex-direction: row;
-        overflow-x: auto;
+      section.content form {
+        max-width: 100%;
       }
-      nav.sidebar button {
-        flex: 1 0 auto;
-        text-align: center;
-      }
-    }
-
-    /* استایل لاگین */
-    #loginForm {
-      margin: auto;
-      background: white;
-      padding: 30px 40px;
-      border-radius: 8px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.1);
-      width: 320px;
-    }
-    #loginForm h2 {
-      margin-bottom: 20px;
-      color: #0d6efd;
-      text-align: center;
-    }
-    #loginForm label {
-      display: block;
-      margin-top: 15px;
-      font-weight: 600;
-    }
-    #loginForm input {
-      width: 100%;
-      padding: 8px 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-    #loginForm button {
-      width: 100%;
-      margin-top: 25px;
-      padding: 10px;
-      background: #0d6efd;
-      border: none;
-      border-radius: 5px;
-      color: white;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 1.1rem;
-      transition: background 0.3s;
-    }
-    #loginForm button:hover {
-      background: #084ecf;
-    }
-    #loginError {
-      color: #dc3545;
-      margin-top: 15px;
-      text-align: center;
-      font-weight: 700;
     }
   </style>
 </head>
 <body>
 
-<!-- فرم لاگین -->
-<div id="loginForm">
-  <h2>Login</h2>
-  <label for="username">Username:</label>
-  <input type="text" id="username" autocomplete="off" />
-  <label for="password">Password:</label>
-  <input type="password" id="password" autocomplete="off" />
-  <label for="ceuno">CEU Number:</label>
-  <input type="text" id="ceuno" autocomplete="off" />
+<!-- صفحه لاگین -->
+<div id="loginPage">
+  <h2>Login to Dashboard</h2>
+  <input type="text" id="username" placeholder="Username" autocomplete="off" />
+  <input type="password" id="password" placeholder="Password" autocomplete="off" />
   <button id="loginBtn">Login</button>
   <div id="loginError"></div>
 </div>
 
-<!-- داشبورد پنهان در ابتدا -->
-<div id="dashboard" style="display:none; flex-direction: column; height: 100vh;">
+<!-- صفحه داشبورد -->
+<div id="dashboard">
   <header>
     <img src="logo.png" alt="Logo" class="logo" />
     <div class="upload-btns">
       <button id="uploadPassportBtn" disabled>Upload Passport (PDF)</button>
-      <input type="file" id="uploadPassport" accept="application/pdf" style="display:none" />
-      <div id="errorPassport" class="error"></div>
-
       <button id="uploadImageBtn" disabled>Upload Image (PDF)</button>
-      <input type="file" id="uploadImage" accept="application/pdf" style="display:none" />
-      <div id="errorImage" class="error"></div>
     </div>
   </header>
-
-  <main style="flex:1; display:flex; overflow:hidden;">
+  <main>
     <nav class="sidebar" id="sidebarLinks">
       <!-- دکمه‌ها اینجا اضافه می‌شوند -->
-    </nav>
-
+    </nav>  
     <section class="content">
-      <img src="a4sample.jpg" alt="A4 Sample Image" />
+      <form id="userInfoForm">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" placeholder="Enter your full name" required />
+
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="Enter your email" required />
+
+        <label for="phone">Phone Number</label>
+        <input type="text" id="phone" placeholder="Enter your phone number" required />
+
+        <label for="address">Address</label>
+        <input type="text" id="address" placeholder="Enter your address" required />
+
+        <label for="nationalId">National ID</label>
+        <input type="text" id="nationalId" placeholder="Enter your national ID" required />
+
+        <button type="submit" class="submit-btn">Submit</button>
+      </form>
     </section>
   </main>
-
   <footer>
     Official Portal Dashboard
   </footer>
 </div>
 
 <script>
-  // داده تستی یوزر برای مثال
-  const users = [
-    {username:"user1", password:"pass1", ceu:"1234"},
-    {username:"user2", password:"pass2", ceu:"5678"}
-  ];
+  // داده‌های تستی برای لینک‌ها - فرض می‌کنیم کاربر لاگین شده است و لینک‌ها آماده‌اند
+  const currentUser = {
+    link1: "https://example.com/doc1",
+    link2: "https://example.com/doc2",
+    link3: "https://example.com/doc3",
+    link4: "https://example.com/doc4",
+    link5: "https://example.com/doc5"
+  };
 
-  const loginForm = document.getElementById('loginForm');
+  const loginPage = document.getElementById('loginPage');
   const dashboard = document.getElementById('dashboard');
   const loginBtn = document.getElementById('loginBtn');
   const loginError = document.getElementById('loginError');
+  const sidebar = document.getElementById('sidebarLinks');
+  const userInfoForm = document.getElementById('userInfoForm');
 
-  loginBtn.addEventListener('click', () => {
+  let logoutTimer;
+
+  // تابع شروع تایمر 10 دقیقه (600000 میلی‌ثانیه)
+  function startLogoutTimer() {
+    if (logoutTimer) clearTimeout(logoutTimer);
+    logoutTimer = setTimeout(() => {
+      alert("Session expired. Please login again.");
+      logout();
+    }, 600000); // 10 دقیقه
+  }
+
+  // ورود به داشبورد
+  function login() {
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value.trim();
-    const ceu = document.getElementById('ceuno').value.trim();
 
-    loginError.textContent = "";
-
-    if (!username || !password || !ceu) {
-      loginError.textContent = "Please fill all fields.";
-      return;
-    }
-
-    // بررسی صحت یوزر
-    const validUser = users.find(u => u.username === username && u.password === password && u.ceu === ceu);
-
-    if (validUser) {
-      // لاگین موفق - نمایش داشبورد
-      loginForm.style.display = "none";
+    // اعتبارسنجی ساده (برای تست)
+    if(username === "admin" && password === "password") {
+      loginPage.style.display = "none";
       dashboard.style.display = "flex";
-      setupSidebarButtons();
+      loginError.textContent = "";
+      loadSidebarButtons();
+      startLogoutTimer();
     } else {
-      loginError.textContent = "Invalid username, password or CEU number.";
+      loginError.textContent = "Invalid username or password!";
     }
+  }
+
+  // خروج و برگشت به صفحه لاگین
+  function logout() {
+    dashboard.style.display = "none";
+    loginPage.style.display = "block";
+    loginError.textContent = "";
+    clearTimeout(logoutTimer);
+    // پاک کردن فرم لاگین و فرم اطلاعات کاربر
+    document.getElementById('username').value = "";
+    document.getElementById('password').value = "";
+    userInfoForm.reset();
+  }
+
+  loginBtn.addEventListener('click', login);
+
+  // ساخت دکمه‌های سایدبار با لینک
+  function loadSidebarButtons() {
+    sidebar.innerHTML = ""; // پاک کردن قبلی
+    for(let i=1; i<=5; i++) {
+      const btn = document.createElement('button');
+      btn.textContent = "Document " + i;
+      btn.onclick = () => {
+        window.location.href = currentUser['link' + i];
+      };
+      sidebar.appendChild(btn);
+    }
+  }
+
+  // با هر تعامل کاربر تایمر ریست می‌شود (برای جلوگیری از logout ناخواسته)
+  ['click', 'mousemove', 'keydown', 'scroll'].forEach(evt => {
+    document.addEventListener(evt, () => {
+      if (dashboard.style.display === "flex") {
+        startLogoutTimer();
+      }
+    });
   });
 
-  // اگر صفحه ریفرش شود، لاگین پاک می‌شود و فرم لاگین نمایش داده می‌شود
-  window.addEventListener('beforeunload', () => {
-    // فقط نمایش فرم لاگین به صورت پیش فرض است، بنابراین کاری نمی‌کنیم
+  // مدیریت ارسال فرم اطلاعات کاربر
+  userInfoForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert("Form submitted successfully!");
+    // می توانید اینجا پردازش فرم را انجام دهید یا داده‌ها را ارسال کنید.
   });
+</script>
 
-  // دکمه‌های سایدبار
-  const sidebarLinks = document.getElementById('sidebarLinks');
-  function setupSidebarButtons() {
-    sidebarLinks.innerHTML = "";
-    const currentUserLinks = {
-      link1: "https://example.com/doc1",
-      link2: "https://example.com/doc2",
-      link3: "https://example.com/doc3",
-      link4: "https://example.com/doc4",
-      link5: "https://example.com/doc5
+</body>
+</html>
