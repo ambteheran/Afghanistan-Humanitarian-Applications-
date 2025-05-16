@@ -2,37 +2,123 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Official Dashboard</title>
   <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      padding: 20px;
+    /* ریست و پایه */
+    * {
+      box-sizing: border-box;
     }
-    header, footer {
+    body, html {
+      margin: 0; padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f8f9fa;
+      color: #333;
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      display: flex;
       align-items: center;
+      background: #0d6efd;
+      color: white;
       padding: 10px 20px;
-      background: #f0f0f0;
+      gap: 15px;
     }
-    .form-group, .info-group, .links {
-      margin: 20px auto;
-      max-width: 400px;
+    header img.logo {
+      height: 50px;
+    }
+    header .upload-btns {
+      margin-left: auto;
+      display: flex;
+      gap: 15px;
+    }
+    header .upload-btns button {
+      background: white;
+      color: #0d6efd;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+    header .upload-btns button:hover {
+      background: #cfe2ff;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+    nav.sidebar {
+      width: 220px;
+      background: #212529;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      gap: 10px;
+    }
+    nav.sidebar button {
+      background: transparent;
+      border: none;
+      color: white;
+      padding: 12px;
       text-align: left;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 5px;
+      transition: background 0.3s;
     }
-    input, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
+    nav.sidebar button:hover {
+      background: #0d6efd;
     }
-    .loading {
-      display: none;
+    section.content {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background: white;
     }
-    @media screen and (max-width: 600px) {
-      header, footer {
+    section.content img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #ccc;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    footer {
+      background: #0d6efd;
+      color: white;
+      text-align: center;
+      padding: 12px 10px;
+      font-weight: 600;
+    }
+
+    /* پیام خطا */
+    .error {
+      color: #dc3545;
+      font-weight: 600;
+      margin-top: 5px;
+      font-size: 0.9rem;
+    }
+
+    /* پاسخگویی موبایل */
+    @media (max-width: 768px) {
+      main {
         flex-direction: column;
+      }
+      nav.sidebar {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+      }
+      nav.sidebar button {
+        flex: 1 0 auto;
+        text-align: center;
       }
     }
   </style>
@@ -40,111 +126,91 @@
 <body>
 
 <header>
-  <img src="logo.png" alt="Logo" width="50"/>
-  <h2>Login Portal</h2>
+  <img src="logo.png" alt="Logo" class="logo" />
+  <div class="upload-btns">
+    <div>
+      <button id="uploadPassportBtn">Upload Passport (PDF)</button>
+      <input type="file" id="uploadPassport" accept="application/pdf" style="display:none" />
+      <div id="errorPassport" class="error"></div>
+    </div>
+    <div>
+      <button id="uploadImageBtn">Upload Image (PDF)</button>
+      <input type="file" id="uploadImage" accept="application/pdf" style="display:none" />
+      <div id="errorImage" class="error"></div>
+    </div>
+  </div>
 </header>
 
-<div class="form-group" id="loginForm">
-  <input type="text" id="username" placeholder="Username" />
-  <input type="password" id="password" placeholder="Password" />
-  <input type="text" id="ceu" placeholder="CEU Number" />
-  <button onclick="validateLogin()">Login</button>
-  <img id="loading1" class="loading" src="loading.gif" width="30" />
-  <p id="errorMsg" style="color:red;"></p>
-</div>
+<main>
+  <nav class="sidebar" id="sidebarLinks" style="display:none;">
+    <!-- دکمه‌ها اینجا اضافه می‌شوند -->
+  </nav>
 
-<div class="info-group" id="infoForm" style="display:none;">
-  <input type="text" id="firstname" placeholder="First Name" />
-  <input type="text" id="lastname" placeholder="Last Name" />
-  <input type="text" id="nationality" placeholder="Nationality" />
-  <input type="text" id="passport" placeholder="Passport/ID Number" />
-  <input type="text" id="caseNumber" placeholder="Case Number" />
-  <button onclick="validatePersonal()">Continue</button>
-  <img id="loading2" class="loading" src="loading.gif" width="30" />
-  <p id="errorMsg2" style="color:red;"></p>
-</div>
-
-<div class="links" id="linksPanel" style="display:none;">
-  <button id="link1"></button>
-  <button id="link2"></button>
-  <button id="link3"></button>
-  <button id="link4"></button>
-  <button id="link5"></button>
-</div>
+  <section class="content">
+    <img src="a4sample.jpg" alt="A4 Sample Image" />
+  </section>
+</main>
 
 <footer>
-  <img src="logo.png" alt="Logo" width="40" />
-  <h4>Official Portal</h4>
+  Official Portal Dashboard
 </footer>
 
 <script>
-let currentUser = null;
-let userData = [];
+  // نمایش فایل آپلود انتخاب شده و بررسی فرمت
+  const uploadPassportBtn = document.getElementById('uploadPassportBtn');
+  const uploadPassportInput = document.getElementById('uploadPassport');
+  const errorPassport = document.getElementById('errorPassport');
 
-fetch("data.json")
-  .then(response => response.json())
-  .then(data => userData = data);
+  const uploadImageBtn = document.getElementById('uploadImageBtn');
+  const uploadImageInput = document.getElementById('uploadImage');
+  const errorImage = document.getElementById('errorImage');
 
-function showLoading(id) {
-  document.getElementById(id).style.display = "inline-block";
-  return new Promise(res => setTimeout(res, 5000));
-}
+  uploadPassportBtn.addEventListener('click', () => uploadPassportInput.click());
+  uploadImageBtn.addEventListener('click', () => uploadImageInput.click());
 
-async function validateLogin() {
-  document.getElementById("errorMsg").innerText = "";
-  await showLoading("loading1");
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-  const ceu = document.getElementById("ceu").value;
-
-  const match = userData.find(u => u.username === username && u.password === password && u.ceu === ceu);
-
-  document.getElementById("loading1").style.display = "none";
-
-  if (match) {
-    currentUser = match;
-    document.getElementById("loginForm").style.display = "none";
-    document.getElementById("infoForm").style.display = "block";
-  } else {
-    document.getElementById("errorMsg").innerText = "Invalid credentials.";
-  }
-}
-
-async function validatePersonal() {
-  document.getElementById("errorMsg2").innerText = "";
-  await showLoading("loading2");
-
-  const fname = document.getElementById("firstname").value;
-  const lname = document.getElementById("lastname").value;
-  const nat = document.getElementById("nationality").value;
-  const pass = document.getElementById("passport").value;
-  const caseNum = document.getElementById("caseNumber").value;
-
-  document.getElementById("loading2").style.display = "none";
-
-  if (
-    fname === currentUser.firstname &&
-    lname === currentUser.lastname &&
-    nat === currentUser.nationality &&
-    pass === currentUser.passport &&
-    caseNum === currentUser.caseNumber
-  ) {
-    document.getElementById("infoForm").style.display = "none";
-    document.getElementById("linksPanel").style.display = "block";
-
-    for (let i = 1; i <= 5; i++) {
-      const btn = document.getElementById("link" + i);
-      btn.innerText = "Document " + i;
-      btn.onclick = () => {
-        // باز کردن بدون تب جدید
-        fetch(currentUser["link" + i])
-          .then(() => window.location.href = currentUser["link" + i]);
-      };
+  uploadPassportInput.addEventListener('change', function() {
+    errorPassport.textContent = "";
+    const file = this.files[0];
+    if (file && file.type !== "application/pdf") {
+      errorPassport.textContent = "Please upload a PDF file only!";
+      this.value = "";
+    } else {
+      errorPassport.textContent = "Passport uploaded successfully.";
     }
-  } else {
-    document.getElementById("errorMsg2").innerText = "Personal info doesn't match.";
+  });
+
+  uploadImageInput.addEventListener('change', function() {
+    errorImage.textContent = "";
+    const file = this.files[0];
+    if (file && file.type !== "application/pdf") {
+      errorImage.textContent = "Please upload a PDF file only!";
+      this.value = "";
+    } else {
+      errorImage.textContent = "Image uploaded successfully.";
+    }
+  });
+
+  // داده‌های تستی برای لینک‌ها - اینجا فرض بر این است که کاربر لاگین شده است و لینک‌ها آماده‌اند
+  const currentUser = {
+    link1: "https://example.com/doc1",
+    link2: "https://example.com/doc2",
+    link3: "https://example.com/doc3",
+    link4: "https://example.com/doc4",
+    link5: "https://example.com/doc5"
+  };
+
+  // ساخت دکمه‌های سایدبار با لینک
+  const sidebar = document.getElementById('sidebarLinks');
+  sidebar.style.display = "flex";
+  for(let i=1; i<=5; i++) {
+    const btn = document.createElement('button');
+    btn.textContent = "Document " + i;
+    btn.onclick = () => {
+      // باز کردن لینک در همین تب
+      window.location.href = currentUser['link' + i];
+    };
+    sidebar.appendChild(btn);
   }
-}
 </script>
 
 </body>
