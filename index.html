@@ -1,130 +1,107 @@
-index.htm. 
-
-
-
-<!DOCTYPE html>
-<html lang="fa">
+<!DOCTYPE html><html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صفحه ورود</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f4f4f4;
-            margin: 0;
-        }
-        .container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input[type="email"],
-        input[type="password"],
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: #0056b3;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #004494;
-        }
-        .error-message {
-            color: red;
-            margin-top: 10px;
-        }
-        #loading {
-            display: none;
-            margin-top: 20px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Government of Italy</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #f4f4f4; }
+    .container { max-width: 400px; margin: 5vh auto; background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    input, button { width: 100%; margin-top: 1rem; padding: 0.8rem; border-radius: 6px; border: 1px solid #ccc; }
+    button { background: #0056b3; color: white; border: none; cursor: pointer; }
+    button:disabled { background: #999; }
+    #loading { display: none; text-align: center; margin-top: 1rem; }
+    #secondPage, #dashboard { display: none; }
+    .dashboard-container { display: flex; height: 100vh; }
+    .sidebar { width: 250px; background: #eee; padding: 1rem; display: flex; flex-direction: column; gap: 1rem; }
+    .sidebar button:disabled { background: #ccc; }
+    .main { flex: 1; padding: 1rem; display: flex; flex-direction: column; }
+    header { background: #003366; color: white; padding: 1rem; display: flex; align-items: center; justify-content: space-between; }
+    header img { height: 40px; }
+    header h1 { font-size: 1.2rem; text-align: center; flex-grow: 1; }
+    .a4image { flex: 1; display: flex; align-items: center; justify-content: center; }
+    .a4image img { width: 210mm; height: 297mm; object-fit: contain; }
+    @media (max-width: 600px) {
+      .dashboard-container { flex-direction: column; }
+      .sidebar { width: 100%; flex-direction: row; overflow-x: auto; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h2>ورود به سیستم</h2>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="email">ایمیل آدرس:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">رمز ورود:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-                <label for="recordNumber">نمبر پرونده:</label>
-                <input type="text" id="recordNumber" name="recordNumber" required>
-            </div>
-            <button type="submit">ورود</button>
-            <div id="errorMessage" class="error-message"></div>
-            <img id="loading" src="loading.gif" alt="در حال بارگذاری...">
-        </form>
+<div class="container" id="loginPage">
+  <h2>ورود</h2>
+  <input type="email" id="email" placeholder="ایمیل آدرس" required />
+  <input type="password" id="password" placeholder="رمز عبور" required />
+  <input type="text" id="caseNumber" placeholder="نمبر پرونده" required />
+  <button onclick="validateLogin()">ورود</button>
+  <div id="loading"><img src="loading.gif" alt="Loading..." width="50" /></div>
+  <p id="error" style="color:red"></p>
+</div><div class="container" id="secondPage">
+  <h2>بررسی معلومات</h2>
+  <div id="fields"></div>
+  <button onclick="goToDashboard()">تایید و ادامه</button>
+  <div id="loading2"><img src="loading.gif" alt="Loading..." width="50" /></div>
+  <p id="error2" style="color:red"></p>
+</div><div id="dashboard">
+  <header>
+    <img src="logo.png" alt="Logo">
+    <h1>دولت جمهوری ایتالیا</h1>
+    <div></div>
+  </header>
+  <div class="dashboard-container">
+    <div class="sidebar">
+      <button onclick="location.href=userData.link1">درخواست ابتدایی</button>
+      <button onclick="location.href=userData.link2">نتیجه درخواست</button>
+      <button onclick="location.href=userData.link3">تاریخ مصاحبه حضوری</button>
+      <button disabled>فایل پاسپورت</button>
+      <button disabled>فایل عکس پرسونلی</button>
     </div>
+    <div class="main">
+      <div class="a4image">
+        <img src="a4image.jpg" alt="A4 Image" />
+      </div>
+    </div>
+  </div>
+</div><script>
+  let users = [];
+  let userData = null;
 
-    <script>
-        const loginForm = document.getElementById('loginForm');
-        const errorMessage = document.getElementById('errorMessage');
-        const loading = document.getElementById('loading');
+  fetch('data.json')
+    .then(res => res.json())
+    .then(data => users = data);
 
-        loginForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            errorMessage.textContent = '';
-            loading.style.display = 'block';
+  function validateLogin() {
+    document.getElementById('loading').style.display = 'block';
+    const email = document.getElementById('email').value;
+    const pass = document.getElementById('password').value;
+    const caseNum = document.getElementById('caseNumber').value;
 
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const recordNumber = document.getElementById('recordNumber').value;
+    setTimeout(() => {
+      const match = users.find(u => u.email === email && u.password === pass && u.caseNumber === caseNum);
+      if (match) {
+        userData = match;
+        document.getElementById('loginPage').style.display = 'none';
+        document.getElementById('secondPage').style.display = 'block';
+        document.getElementById('fields').innerHTML = `
+          <p><strong>نام:</strong> ${match.firstname}</p>
+          <p><strong>تخلص:</strong> ${match.lastname}</p>
+          <p><strong>ملیت:</strong> ${match.nationality}</p>
+          <p><strong>شماره پاسپورت / کارت ملی:</strong> ${match.document}</p>
+          <p><strong>نمبر پرونده:</strong> ${match.caseNumber}</p>
+        `;
+      } else {
+        document.getElementById('error').innerText = 'اطلاعات اشتباه است';
+      }
+      document.getElementById('loading').style.display = 'none';
+    }, 1000);
+  }
 
-            fetch('Data.json')
-                .then(response => response.json())
-                .then(data => {
-                    const user = data.find(user =>
-                        user.email === email &&
-                        user.password === password &&
-                        user.recordNumber === recordNumber
-                    );
-
-                    loading.style.display = 'none';
-
-                    if (user) {
-                        // ذخیره شماره پرونده برای صفحه بعد
-                        sessionStorage.setItem('recordNumber', recordNumber);
-                        window.location.href = 'application-form.html';
-                    } else {
-                        errorMessage.textContent = 'ایمیل، رمز ورود یا نمبر پرونده اشتباه است.';
-                    }
-                })
-                .catch(error => {
-                    console.error('خطا در خواندن فایل JSON:', error);
-                    errorMessage.textContent = 'خطا در برقراری ارتباط.';
-                    loading.style.display = 'none';
-                });
-        });
-    </script>
-</body>
+  function goToDashboard() {
+    document.getElementById('loading2').style.display = 'block';
+    setTimeout(() => {
+      document.getElementById('secondPage').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+    }, 1000);
+  }
+</script></body>
 </html>
