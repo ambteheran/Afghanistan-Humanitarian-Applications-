@@ -1,47 +1,38 @@
-[
-  {
-    "recordNumber": "12345",
-    "email": "user1@example.com",
-    "password": "pass1",
-    "firstName": "علی",
-    "lastName": "محمدی",
-    "nationality": "افغانستان",
-    "nationalId": "1234567890",
-    "passportFileLink": "/files/user1/passport.pdf",
-    "photoFileLink": "/files/user1/photo.jpg",
-    "initialRequestLink": "/initial-request/12345",
-    "requestResultLink": "/request-result/12345",
-    "interviewDateTime": "2025-06-15 10:00",
-    "dashboardImage": "/images/italy_info.jpg"
-  },
-  {
-    "recordNumber": "67890",
-    "email": "user2@example.com",
-    "password": "pass2",
-    "firstName": "فاطمه",
-    "lastName": "حسینی",
-    "nationality": "ایران",
-    "nationalId": "0987654321",
-    "passportFileLink": "/files/user2/passport.pdf",
-    "photoFileLink": "/files/user2/photo.jpg",
-    "initialRequestLink": "/initial-request/67890",
-    "requestResultLink": "/request-result/67890",
-    "interviewDateTime": "2025-06-20 14:30",
-    "dashboardImage": "/images/italy_info.jpg"
-  },
-  {
-    "recordNumber": "...",
-    "email": "...",
-    "password": "...",
-    "firstName": "...",
-    "lastName": "...",
-    "nationality": "...",
-    "nationalId": "...",
-    "passportFileLink": "...",
-    "photoFileLink": "...",
-    "initialRequestLink": "...",
-    "requestResultLink": "...",
-    "interviewDateTime": "...",
-    "dashboardImage": "/images/italy_info.jpg"
-  }
-]
+{
+  "users": [
+    {
+      "email": "user1@example.com",
+      "password": "password123",
+      "caseNumber": "A001",
+      "firstName": "علی",
+      "lastName": "احمدی",
+      "nationality": "افغانستان",
+      "documentNumber": "P1234567",
+      "dashboardLinks": {
+        "request1": "https://example.com/request1",
+        "result2": "https://example.com/result2",
+        "interview3": "https://example.com/interview3",
+        "passportFile": "https://example.com/passport",
+        "photoFile": "https://example.com/photo"
+      },
+      "dashboardImage": "https://example.com/image-a4.jpg"
+    },
+    {
+      "email": "user2@example.com",
+      "password": "abc123",
+      "caseNumber": "A002",
+      "firstName": "زهرا",
+      "lastName": "محمدی",
+      "nationality": "ایران",
+      "documentNumber": "M7654321",
+      "dashboardLinks": {
+        "request1": "https://example.com/request1-u2",
+        "result2": "https://example.com/result2-u2",
+        "interview3": "https://example.com/interview3-u2",
+        "passportFile": "https://example.com/passport-u2",
+        "photoFile": "https://example.com/photo-u2"
+      },
+      "dashboardImage": "https://example.com/image-a4-u2.jpg"
+    }
+  ]
+}
