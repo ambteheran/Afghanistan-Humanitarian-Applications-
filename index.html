@@ -1,107 +1,183 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login - Government of Italy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - دولت جمهوری ایتالیا</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: sans-serif; background: #f4f4f4; }
-    .container { max-width: 400px; margin: 5vh auto; background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-    input, button { width: 100%; margin-top: 1rem; padding: 0.8rem; border-radius: 6px; border: 1px solid #ccc; }
-    button { background: #0056b3; color: white; border: none; cursor: pointer; }
-    button:disabled { background: #999; }
-    #loading { display: none; text-align: center; margin-top: 1rem; }
-    #secondPage, #dashboard { display: none; }
-    .dashboard-container { display: flex; height: 100vh; }
-    .sidebar { width: 250px; background: #eee; padding: 1rem; display: flex; flex-direction: column; gap: 1rem; }
-    .sidebar button:disabled { background: #ccc; }
-    .main { flex: 1; padding: 1rem; display: flex; flex-direction: column; }
-    header { background: #003366; color: white; padding: 1rem; display: flex; align-items: center; justify-content: space-between; }
-    header img { height: 40px; }
-    header h1 { font-size: 1.2rem; text-align: center; flex-grow: 1; }
-    .a4image { flex: 1; display: flex; align-items: center; justify-content: center; }
-    .a4image img { width: 210mm; height: 297mm; object-fit: contain; }
-    @media (max-width: 600px) {
-      .dashboard-container { flex-direction: column; }
-      .sidebar { width: 100%; flex-direction: row; overflow-x: auto; }
+    body {
+      margin: 0;
+      font-family: Tahoma, sans-serif;
+      background: #f5f5f5;
+      direction: rtl;
+    }
+
+    .page {
+      padding: 20px;
+      text-align: center;
+    }
+
+    input, button {
+      display: block;
+      margin: 10px auto;
+      padding: 10px;
+      width: 80%;
+      max-width: 400px;
+      font-size: 16px;
+    }
+
+    .error {
+      color: red;
+    }
+
+    .loading {
+      position: fixed;
+      top: 0; left: 0;
+      right: 0; bottom: 0;
+      background: rgba(255,255,255,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    header {
+      background-color: #003366;
+      color: white;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .logo {
+      height: 50px;
+    }
+
+    aside {
+      background: #e6e6e6;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    .main-image {
+      width: 100%;
+      max-width: 595px;
+      height: auto;
     }
   </style>
 </head>
 <body>
-<div class="container" id="loginPage">
-  <h2>ورود</h2>
-  <input type="email" id="email" placeholder="ایمیل آدرس" required />
-  <input type="password" id="password" placeholder="رمز عبور" required />
-  <input type="text" id="caseNumber" placeholder="نمبر پرونده" required />
-  <button onclick="validateLogin()">ورود</button>
-  <div id="loading"><img src="loading.gif" alt="Loading..." width="50" /></div>
-  <p id="error" style="color:red"></p>
-</div><div class="container" id="secondPage">
-  <h2>بررسی معلومات</h2>
-  <div id="fields"></div>
-  <button onclick="goToDashboard()">تایید و ادامه</button>
-  <div id="loading2"><img src="loading.gif" alt="Loading..." width="50" /></div>
-  <p id="error2" style="color:red"></p>
-</div><div id="dashboard">
-  <header>
-    <img src="logo.png" alt="Logo">
-    <h1>دولت جمهوری ایتالیا</h1>
-    <div></div>
-  </header>
-  <div class="dashboard-container">
-    <div class="sidebar">
-      <button onclick="location.href=userData.link1">درخواست ابتدایی</button>
-      <button onclick="location.href=userData.link2">نتیجه درخواست</button>
-      <button onclick="location.href=userData.link3">تاریخ مصاحبه حضوری</button>
+
+  <!-- لودینگ -->
+  <div id="loading" class="loading" style="display:none;">
+    <img src="loading.gif" alt="Loading...">
+  </div>
+
+  <!-- صفحه لاگین -->
+  <div id="loginPage" class="page">
+    <h2>ورود به سیستم</h2>
+    <input type="email" id="email" placeholder="ایمیل آدرس">
+    <input type="password" id="password" placeholder="رمز ورود">
+    <input type="text" id="caseNumber" placeholder="نمبر پرونده">
+    <button onclick="handleLogin()">ورود</button>
+    <p id="loginError" class="error"></p>
+  </div>
+
+  <!-- صفحه اطلاعات -->
+  <div id="infoPage" class="page" style="display:none;">
+    <h2>بررسی معلومات</h2>
+    <div id="userInfo">
+      <p><strong>نام:</strong> <span id="firstName"></span></p>
+      <p><strong>تخلص:</strong> <span id="lastName"></span></p>
+      <p><strong>ملیت:</strong> <span id="nationality"></span></p>
+      <p><strong>شماره مدرک:</strong> <span id="document"></span></p>
+      <p><strong>نمبر پرونده:</strong> <span id="caseNum"></span></p>
+    </div>
+    <button onclick="showDashboard()">ادامه</button>
+  </div>
+
+  <!-- صفحه داشبورد -->
+  <div id="dashboard" class="page" style="display:none;">
+    <header>
+      <img src="logo.png" alt="لوگو" class="logo">
+      <h1>دولت جمهوری ایتالیا</h1>
+    </header>
+    <aside>
+      <button onclick="goToLink('link1')">درخواست ابتدایی1</button>
+      <button onclick="goToLink('link2')">نتیجه درخواست2</button>
+      <button onclick="goToLink('link3')">تاریخ و زمان مصاحبه</button>
       <button disabled>فایل پاسپورت</button>
       <button disabled>فایل عکس پرسونلی</button>
-    </div>
-    <div class="main">
-      <div class="a4image">
-        <img src="a4image.jpg" alt="A4 Image" />
-      </div>
-    </div>
+    </aside>
+    <main>
+      <img src="image.jpg" alt="Dashboard Image" class="main-image">
+    </main>
   </div>
-</div><script>
-  let users = [];
-  let userData = null;
 
-  fetch('data.json')
-    .then(res => res.json())
-    .then(data => users = data);
+  <script>
+    let userData = [];
 
-  function validateLogin() {
-    document.getElementById('loading').style.display = 'block';
-    const email = document.getElementById('email').value;
-    const pass = document.getElementById('password').value;
-    const caseNum = document.getElementById('caseNumber').value;
+    fetch('data.json')
+      .then(response => response.json())
+      .then(data => userData = data)
+      .catch(error => alert("خطا در بارگیری داده‌ها"));
 
-    setTimeout(() => {
-      const match = users.find(u => u.email === email && u.password === pass && u.caseNumber === caseNum);
-      if (match) {
-        userData = match;
-        document.getElementById('loginPage').style.display = 'none';
-        document.getElementById('secondPage').style.display = 'block';
-        document.getElementById('fields').innerHTML = `
-          <p><strong>نام:</strong> ${match.firstname}</p>
-          <p><strong>تخلص:</strong> ${match.lastname}</p>
-          <p><strong>ملیت:</strong> ${match.nationality}</p>
-          <p><strong>شماره پاسپورت / کارت ملی:</strong> ${match.document}</p>
-          <p><strong>نمبر پرونده:</strong> ${match.caseNumber}</p>
-        `;
+    function showLoading(show) {
+      document.getElementById("loading").style.display = show ? "flex" : "none";
+    }
+
+    function handleLogin() {
+      showLoading(true);
+      setTimeout(() => {
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const caseNumber = document.getElementById("caseNumber").value.trim();
+        
+        const user = userData.find(u => u.email === email && u.password === password && u.caseNumber === caseNumber);
+        
+        if (user) {
+          sessionStorage.setItem("currentUser", JSON.stringify(user));
+          document.getElementById("loginPage").style.display = "none";
+          showInfo(user);
+        } else {
+          document.getElementById("loginError").textContent = "اطلاعات وارد شده اشتباه است.";
+        }
+        showLoading(false);
+      }, 1000);
+    }
+
+    function showInfo(user) {
+      document.getElementById("infoPage").style.display = "block";
+      document.getElementById("firstName").textContent = user.firstName;
+      document.getElementById("lastName").textContent = user.lastName;
+      document.getElementById("nationality").textContent = user.nationality;
+      document.getElementById("document").textContent = user.documentNumber;
+      document.getElementById("caseNum").textContent = user.caseNumber;
+    }
+
+    function showDashboard() {
+      document.getElementById("infoPage").style.display = "none";
+      document.getElementById("dashboard").style.display = "block";
+    }
+
+    function goToLink(key) {
+      const user = JSON.parse(sessionStorage.getItem("currentUser"));
+      if (user && user[key]) {
+        window.location.href = user[key];
       } else {
-        document.getElementById('error').innerText = 'اطلاعات اشتباه است';
+        alert("لینک پیدا نشد.");
       }
-      document.getElementById('loading').style.display = 'none';
-    }, 1000);
-  }
+    }
+  </script>
 
-  function goToDashboard() {
-    document.getElementById('loading2').style.display = 'block';
-    setTimeout(() => {
-      document.getElementById('secondPage').style.display = 'none';
-      document.getElementById('dashboard').style.display = 'block';
-    }, 1000);
-  }
-</script></body>
+</body>
 </html>
