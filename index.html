@@ -29,7 +29,28 @@
     }
     header img.logo {
       height: 50px;
-    
+    }
+    header .upload-btns {
+      margin-left: auto;
+      display: flex;
+      gap: 15px;
+    }
+    header .upload-btns button {
+      background: white;
+      color: #0d6efd;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+    header .upload-btns button:hover:not(:disabled) {
+      background: #cfe2ff;
+    }
+    header .upload-btns button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
     main {
       flex: 1;
@@ -104,97 +125,152 @@
         text-align: center;
       }
     }
+
+    /* استایل لاگین */
+    #loginForm {
+      margin: auto;
+      background: white;
+      padding: 30px 40px;
+      border-radius: 8px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      width: 320px;
+    }
+    #loginForm h2 {
+      margin-bottom: 20px;
+      color: #0d6efd;
+      text-align: center;
+    }
+    #loginForm label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+    #loginForm input {
+      width: 100%;
+      padding: 8px 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    #loginForm button {
+      width: 100%;
+      margin-top: 25px;
+      padding: 10px;
+      background: #0d6efd;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: background 0.3s;
+    }
+    #loginForm button:hover {
+      background: #084ecf;
+    }
+    #loginError {
+      color: #dc3545;
+      margin-top: 15px;
+      text-align: center;
+      font-weight: 700;
+    }
   </style>
 </head>
 <body>
 
-<header>
-  <img src="logo.png" alt="Logo" class="logo" />
-  <div class="upload-btns">
-    <div>
-      <button id="uploadPassportBtn">Upload Passport (PDF)</button>
+<!-- فرم لاگین -->
+<div id="loginForm">
+  <h2>Login</h2>
+  <label for="username">Username:</label>
+  <input type="text" id="username" autocomplete="off" />
+  <label for="password">Password:</label>
+  <input type="password" id="password" autocomplete="off" />
+  <label for="ceuno">CEU Number:</label>
+  <input type="text" id="ceuno" autocomplete="off" />
+  <button id="loginBtn">Login</button>
+  <div id="loginError"></div>
+</div>
+
+<!-- داشبورد پنهان در ابتدا -->
+<div id="dashboard" style="display:none; flex-direction: column; height: 100vh;">
+  <header>
+    <img src="logo.png" alt="Logo" class="logo" />
+    <div class="upload-btns">
+      <button id="uploadPassportBtn" disabled>Upload Passport (PDF)</button>
       <input type="file" id="uploadPassport" accept="application/pdf" style="display:none" />
       <div id="errorPassport" class="error"></div>
-    </div>
-    <div>
-      <button id="uploadImageBtn">Upload Image (PDF)</button>
+
+      <button id="uploadImageBtn" disabled>Upload Image (PDF)</button>
       <input type="file" id="uploadImage" accept="application/pdf" style="display:none" />
       <div id="errorImage" class="error"></div>
     </div>
-  </div>
-</header>
+  </header>
 
-<main>
-  <nav class="sidebar" id="sidebarLinks" style="display:none;">
-    <!-- دکمه‌ها اینجا اضافه می‌شوند -->
-  </nav>
+  <main style="flex:1; display:flex; overflow:hidden;">
+    <nav class="sidebar" id="sidebarLinks">
+      <!-- دکمه‌ها اینجا اضافه می‌شوند -->
+    </nav>
 
-  <section class="content">
-    <img src="a4sample.jpg" alt="A4 Sample Image" />
-  </section>
-</main>
+    <section class="content">
+      <img src="a4sample.jpg" alt="A4 Sample Image" />
+    </section>
+  </main>
 
-<footer>
-  Official Portal Dashboard
-</footer>
+  <footer>
+    Official Portal Dashboard
+  </footer>
+</div>
 
 <script>
-  // نمایش فایل آپلود انتخاب شده و بررسی فرمت
-  const uploadPassportBtn = document.getElementById('uploadPassportBtn');
-  const uploadPassportInput = document.getElementById('uploadPassport');
-  const errorPassport = document.getElementById('errorPassport');
+  // داده تستی یوزر برای مثال
+  const users = [
+    {username:"user1", password:"pass1", ceu:"1234"},
+    {username:"user2", password:"pass2", ceu:"5678"}
+  ];
 
-  const uploadImageBtn = document.getElementById('uploadImageBtn');
-  const uploadImageInput = document.getElementById('uploadImage');
-  const errorImage = document.getElementById('errorImage');
+  const loginForm = document.getElementById('loginForm');
+  const dashboard = document.getElementById('dashboard');
+  const loginBtn = document.getElementById('loginBtn');
+  const loginError = document.getElementById('loginError');
 
-  uploadPassportBtn.addEventListener('click', () => uploadPassportInput.click());
-  uploadImageBtn.addEventListener('click', () => uploadImageInput.click());
+  loginBtn.addEventListener('click', () => {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const ceu = document.getElementById('ceuno').value.trim();
 
-  uploadPassportInput.addEventListener('change', function() {
-    errorPassport.textContent = "";
-    const file = this.files[0];
-    if (file && file.type !== "application/pdf") {
-      errorPassport.textContent = "Please upload a PDF file only!";
-      this.value = "";
+    loginError.textContent = "";
+
+    if (!username || !password || !ceu) {
+      loginError.textContent = "Please fill all fields.";
+      return;
+    }
+
+    // بررسی صحت یوزر
+    const validUser = users.find(u => u.username === username && u.password === password && u.ceu === ceu);
+
+    if (validUser) {
+      // لاگین موفق - نمایش داشبورد
+      loginForm.style.display = "none";
+      dashboard.style.display = "flex";
+      setupSidebarButtons();
     } else {
-      errorPassport.textContent = "Passport uploaded successfully.";
+      loginError.textContent = "Invalid username, password or CEU number.";
     }
   });
 
-  uploadImageInput.addEventListener('change', function() {
-    errorImage.textContent = "";
-    const file = this.files[0];
-    if (file && file.type !== "application/pdf") {
-      errorImage.textContent = "Please upload a PDF file only!";
-      this.value = "";
-    } else {
-      errorImage.textContent = "Image uploaded successfully.";
-    }
+  // اگر صفحه ریفرش شود، لاگین پاک می‌شود و فرم لاگین نمایش داده می‌شود
+  window.addEventListener('beforeunload', () => {
+    // فقط نمایش فرم لاگین به صورت پیش فرض است، بنابراین کاری نمی‌کنیم
   });
 
-  // داده‌های تستی برای لینک‌ها - اینجا فرض بر این است که کاربر لاگین شده است و لینک‌ها آماده‌اند
-  const currentUser = {
-    link1: "https://example.com/doc1",
-    link2: "https://example.com/doc2",
-    link3: "https://example.com/doc3",
-    link4: "https://example.com/doc4",
-    link5: "https://example.com/doc5"
-  };
-
-  // ساخت دکمه‌های سایدبار با لینک
-  const sidebar = document.getElementById('sidebarLinks');
-  sidebar.style.display = "flex";
-  for(let i=1; i<=5; i++) {
-    const btn = document.createElement('button');
-    btn.textContent = "Document " + i;
-    btn.onclick = () => {
-      // باز کردن لینک در همین تب
-      window.location.href = currentUser['link' + i];
-    };
-    sidebar.appendChild(btn);
-  }
-</script>
-
-</body>
-</html>
+  // دکمه‌های سایدبار
+  const sidebarLinks = document.getElementById('sidebarLinks');
+  function setupSidebarButtons() {
+    sidebarLinks.innerHTML = "";
+    const currentUserLinks = {
+      link1: "https://example.com/doc1",
+      link2: "https://example.com/doc2",
+      link3: "https://example.com/doc3",
+      link4: "https://example.com/doc4",
+      link5: "https://example.com/doc5
