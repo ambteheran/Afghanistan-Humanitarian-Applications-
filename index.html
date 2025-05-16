@@ -1,57 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login Panel</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      font-family: sans-serif;
+      text-align: center;
+      padding: 20px;
     }
     header, footer {
-      background-color: #003366;
-      color: white;
-      text-align: center;
-      width: 100%;
-      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: #f0f0f0;
     }
-    .form-container {
-      background: white;
-      margin-top: 20px;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      width: 90%;
+    .form-group, .info-group, .links {
+      margin: 20px auto;
       max-width: 400px;
+      text-align: left;
     }
     input, button {
       width: 100%;
       padding: 10px;
       margin-top: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-    button {
-      background: #003366;
-      color: white;
-      cursor: pointer;
-    }
-    .hidden {
-      display: none;
     }
     .loading {
       display: none;
-      margin-top: 10px;
-      text-align: center;
     }
-    @media (max-width: 600px) {
-      .form-container {
-        width: 95%;
+    @media screen and (max-width: 600px) {
+      header, footer {
+        flex-direction: column;
       }
     }
   </style>
@@ -59,112 +40,111 @@
 <body>
 
 <header>
-  <img src="logo.png" height="40">
-  <h2>Login System</h2>
+  <img src="logo.png" alt="Logo" width="50"/>
+  <h2>Login Portal</h2>
 </header>
 
-<!-- Step 1: Login -->
-<div class="form-container" id="login-form">
-  <input type="text" id="username" placeholder="Username" required>
-  <input type="password" id="password" placeholder="Password" required>
-  <input type="text" id="ceu" placeholder="CEU Number" required>
-  <button onclick="verifyLogin()">Login</button>
-  <div class="loading" id="loading1">
-    <img src="loading.gif" width="40"><br>Loading...
-  </div>
+<div class="form-group" id="loginForm">
+  <input type="text" id="username" placeholder="Username" />
+  <input type="password" id="password" placeholder="Password" />
+  <input type="text" id="ceu" placeholder="CEU Number" />
+  <button onclick="validateLogin()">Login</button>
+  <img id="loading1" class="loading" src="loading.gif" width="30" />
+  <p id="errorMsg" style="color:red;"></p>
 </div>
 
-<!-- Step 2: Personal Info -->
-<div class="form-container hidden" id="info-form">
-  <input type="text" id="fname" placeholder="اسم">
-  <input type="text" id="lname" placeholder="تخلص">
-  <input type="text" id="nationality" placeholder="ملیت">
-  <input type="text" id="passport" placeholder="شماره پاسپورت یا کارت ملی">
-  <input type="text" id="caseNumber" placeholder="شماره پرونده">
-  <button onclick="verifyData()">Submit</button>
-  <div class="loading" id="loading2">
-    <img src="loading.gif" width="40"><br>Processing...
-  </div>
+<div class="info-group" id="infoForm" style="display:none;">
+  <input type="text" id="firstname" placeholder="First Name" />
+  <input type="text" id="lastname" placeholder="Last Name" />
+  <input type="text" id="nationality" placeholder="Nationality" />
+  <input type="text" id="passport" placeholder="Passport/ID Number" />
+  <input type="text" id="caseNumber" placeholder="Case Number" />
+  <button onclick="validatePersonal()">Continue</button>
+  <img id="loading2" class="loading" src="loading.gif" width="30" />
+  <p id="errorMsg2" style="color:red;"></p>
 </div>
 
-<!-- Step 3: Dashboard -->
-<div class="form-container hidden" id="dashboard">
-  <h3>خوش آمدید</h3>
-  <button id="btn1">مدرک 1</button>
-  <button id="btn2">مدرک 2</button>
-  <button id="btn3">مدرک 3</button>
-  <button id="btn4">مدرک 4</button>
-  <button id="btn5">مدرک 5</button>
+<div class="links" id="linksPanel" style="display:none;">
+  <button id="link1"></button>
+  <button id="link2"></button>
+  <button id="link3"></button>
+  <button id="link4"></button>
+  <button id="link5"></button>
 </div>
 
 <footer>
-  <img src="logo.png" height="40">
-  <p>Powered by You</p>
+  <img src="logo.png" alt="Logo" width="40" />
+  <h4>Official Portal</h4>
 </footer>
 
 <script>
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbwhwCOA4J-b-YfCdAkGAPCMoeesqq_zOAQ-tNYg0os8qBIYGeq-HKNwQI3GA37lMM3JqA/exec';
+let currentUser = null;
+let userData = [];
 
-  function verifyLogin() {
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
-    const ceu = document.getElementById("ceu").value;
+fetch("data.json")
+  .then(response => response.json())
+  .then(data => userData = data);
 
-    document.getElementById("loading1").style.display = "block";
+function showLoading(id) {
+  document.getElementById(id).style.display = "inline-block";
+  return new Promise(res => setTimeout(res, 5000));
+}
 
-    fetch(${scriptURL}?username=${username}&password=${password}&ceu=${ceu})
-      .then(res => res.json())
-      .then(data => {
-        setTimeout(() => {
-          document.getElementById("loading1").style.display = "none";
-          if (data.success) {
-            document.getElementById("login-form").classList.add("hidden");
-            document.getElementById("info-form").classList.remove("hidden");
-          } else {
-            alert("اطلاعات وارد شده نادرست است.");
-          }
-        }, 5000);
-      });
+async function validateLogin() {
+  document.getElementById("errorMsg").innerText = "";
+  await showLoading("loading1");
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+  const ceu = document.getElementById("ceu").value;
+
+  const match = userData.find(u => u.username === username && u.password === password && u.ceu === ceu);
+
+  document.getElementById("loading1").style.display = "none";
+
+  if (match) {
+    currentUser = match;
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("infoForm").style.display = "block";
+  } else {
+    document.getElementById("errorMsg").innerText = "Invalid credentials.";
   }
+}
 
-  function verifyData() {
-    const fname = document.getElementById("fname").value;
-    const lname = document.getElementById("lname").value;
-    const nationality = document.getElementById("nationality").value;
-    const passport = document.getElementById("passport").value;
-    const caseNumber = document.getElementById("caseNumber").value;
+async function validatePersonal() {
+  document.getElementById("errorMsg2").innerText = "";
+  await showLoading("loading2");
 
-    document.getElementById("loading2").style.display = "block";
+  const fname = document.getElementById("firstname").value;
+  const lname = document.getElementById("lastname").value;
+  const nat = document.getElementById("nationality").value;
+  const pass = document.getElementById("passport").value;
+  const caseNum = document.getElementById("caseNumber").value;
 
-    fetch("data.json")
-      .then(response => response.json())
-      .then(json => {
-        setTimeout(() => {
-          document.getElementById("loading2").style.display = "none";
+  document.getElementById("loading2").style.display = "none";
 
-          const found = json.find(item =>
-            item.firstname === fname &&
-            item.lastname === lname &&
-            item.nationality === nationality &&
-            item.passport === passport &&
-            item.caseNumber === caseNumber
-          );
+  if (
+    fname === currentUser.firstname &&
+    lname === currentUser.lastname &&
+    nat === currentUser.nationality &&
+    pass === currentUser.passport &&
+    caseNum === currentUser.caseNumber
+  ) {
+    document.getElementById("infoForm").style.display = "none";
+    document.getElementById("linksPanel").style.display = "block";
 
-          if (found) {
-            document.getElementById("info-form").classList.add("hidden");
-            document.getElementById("dashboard").classList.remove("hidden");
-
-            document.getElementById("btn1").onclick = () => location.href = found.link1;
-            document.getElementById("btn2").onclick = () => location.href = found.link2;
-            document.getElementById("btn3").onclick = () => location.href = found.link3;
-            document.getElementById("btn4").onclick = () => location.href = found.link4;
-            document.getElementById("btn5").onclick = () => location.href = found.link5;
-          } else {
-            alert("اطلاعات شما در سیستم پیدا نشد.");
-          }
-        }, 5000);
-      });
+    for (let i = 1; i <= 5; i++) {
+      const btn = document.getElementById("link" + i);
+      btn.innerText = "Document " + i;
+      btn.onclick = () => {
+        // باز کردن بدون تب جدید
+        fetch(currentUser["link" + i])
+          .then(() => window.location.href = currentUser["link" + i]);
+      };
+    }
+  } else {
+    document.getElementById("errorMsg2").innerText = "Personal info doesn't match.";
   }
+}
 </script>
 
 </body>
