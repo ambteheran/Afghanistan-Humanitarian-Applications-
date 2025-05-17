@@ -1,32 +1,15 @@
-[
-  {
-    "username": "NOORAGHA_AHADI",
-    "password": "IT197531842",
-    "ceu": "64511169",
-    "firstname": "NOOR AGHA",
-    "lastname": "AHADI",
-    "nationality": "AFGHAN",
-    "passport": "10603026",
-    "caseNumber": "IT197531842",
-    "link1": "https://example.com/ali/doc1",
-    "link2": "https://example.com/ali/doc2",
-    "link3": "https://example.com/ali/doc3",
-    "link4": "https://example.com/ali/doc4",
-    "link5": "https://example.com/ali/doc5"
-  },
-  {
-    "username": "fatima456",
-    "password": "secret456",
-    "ceu": "00456",
-    "firstname": "Fatima",
-    "lastname": "Rahimi",
-    "nationality": "Afghanistan",
-    "passport": "B98765432",
-    "caseNumber": "4567",
-    "link1": "https://example.com/fatima/doc1",
-    "link2": "https://example.com/fatima/doc2",
-    "link3": "https://example.com/fatima/doc3",
-    "link4": "https://example.com/fatima/doc4",
-    "link5": "https://example.com/fatima/doc5"
-  }
-]
+{
+  "username": "NOORAGHA_AHADI",
+  "password": "IT197531842",
+  "ceu": "64511169",
+  "firstname": "NOOR AGHA",
+  "lastname": "AHADI",
+  "nationality": "AFGHAN",
+  "passport": "10603026",
+  "caseNumber": "IT197531842",
+  "link1": "https://example.com/ali/doc1",
+  "link2": "https://example.com/ali/doc2",
+  "link3": "https://example.com/ali/doc3",
+  "link4": "https://example.com/ali/doc4",
+  "link5": "https://example.com/ali/doc5"
+}
