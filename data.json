@@ -1,15 +1,17 @@
-{
-  "username": "NOORAGHA_AHADI",
-  "password": "IT197531842",
-  "ceu": "64511169",
-  "firstname": "NOOR AGHA",
-  "lastname": "AHADI",
-  "nationality": "AFGHAN",
-  "passport": "10603026",
-  "caseNumber": "IT197531842",
-  "link1": "https://example.com/ali/doc1",
-  "link2": "https://example.com/ali/doc2",
-  "link3": "https://example.com/ali/doc3",
-  "link4": "https://example.com/ali/doc4",
-  "link5": "https://example.com/ali/doc5"
-}
+[
+  {
+    "username": "NOORAGHA_AHADI",
+    "password": "IT197531842",
+    "ceu": "64511169",
+    "firstname": "NOOR AGHA",
+    "lastname": "AHADI",
+    "nationality": "AFGHAN",
+    "passport": "10603026",
+    "caseNumber": "IT197531842",
+    "link1": "https://example.com/ali/doc1",
+    "link2": "https://example.com/ali/doc2",
+    "link3": "https://example.com/ali/doc3",
+    "link4": "https://example.com/ali/doc4",
+    "link5": "https://example.com/ali/doc5"
+  }
+]
