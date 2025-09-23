@@ -54,8 +54,12 @@
       font-weight: bold;
       cursor: pointer;
     }
-    button:hover {
+    button:hover:not(:disabled) {
       background-color: #00509e;
+    }
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
     }
     .loading {
       display: none;
@@ -193,7 +197,7 @@ async function validatePersonal() {
     linksDiv.innerHTML = "";
 
     const buttons = [
-      { key: "https://ambtehran-esteri-fa.github.io/show-result/", label: "Final Result" },
+      { key: "link1", label: "View Final Result" },
       { key: "link2", label: "Upload Passport" },
       { key: "link3", label: "Upload Photo" },
       { key: "link4", label: "UNHCR Confirmation" },
@@ -204,11 +208,9 @@ async function validatePersonal() {
       const btn = document.createElement("button");
       btn.innerText = btnData.label;
       if (currentUser[btnData.key]) {
-        btn.onclick = () => window.open(currentUser[btnData.key], "_blank");
+        btn.onclick = () => window.open(currentUser[btnData.key], "_blank"); // باز شدن در تب جدید
       } else {
         btn.disabled = true;
-        btn.style.backgroundColor = "#ccc";
-        btn.style.cursor = "not-allowed";
       }
       linksDiv.appendChild(btn);
     });
@@ -232,7 +234,6 @@ function logout() {
   document.getElementById("ceu").value = "";
 }
 </script>
-
 
 </body>
 </html>
