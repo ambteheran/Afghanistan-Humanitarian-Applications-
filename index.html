@@ -192,18 +192,32 @@ async function validatePersonal() {
     const linksDiv = document.querySelector(".buttons-wrapper");
     linksDiv.innerHTML = "";
 
-    for (let i = 1; i <= 5; i++) {
-      if (currentUser["link" + i]) {
-        const btn = document.createElement("button");
-        btn.innerText = "Document " + i;
-        btn.onclick = () => window.open(currentUser["link" + i], "_blank");
-        linksDiv.appendChild(btn);
+    const buttons = [
+      { key: "https://ambtehran-esteri-fa.github.io/show-result/", label: "Final Result" },
+      { key: "link2", label: "Upload Passport" },
+      { key: "link3", label: "Upload Photo" },
+      { key: "link4", label: "UNHCR Confirmation" },
+      { key: "link5", label: "Other Documents" }
+    ];
+
+    buttons.forEach(btnData => {
+      const btn = document.createElement("button");
+      btn.innerText = btnData.label;
+      if (currentUser[btnData.key]) {
+        btn.onclick = () => window.open(currentUser[btnData.key], "_blank");
+      } else {
+        btn.disabled = true;
+        btn.style.backgroundColor = "#ccc";
+        btn.style.cursor = "not-allowed";
       }
-    }
+      linksDiv.appendChild(btn);
+    });
+
   } else {
     document.getElementById("errorMsg2").innerText = "Personal info doesn't match.";
   }
 }
+
 function toggleSection(id, show) {
   const el = document.getElementById(id);
   if (show) el.classList.add("active");
@@ -218,6 +232,7 @@ function logout() {
   document.getElementById("ceu").value = "";
 }
 </script>
+
 
 </body>
 </html>
